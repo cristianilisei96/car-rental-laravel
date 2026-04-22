@@ -2,16 +2,16 @@
 
 use App\Http\Controllers\Admin\CarBrandController;
 use App\Http\Controllers\Admin\CarColorController;
-use App\Http\Controllers\Admin\CarController as AdminCarController;
 use App\Http\Controllers\Admin\CarFuelController;
 use App\Http\Controllers\Admin\CarModelController;
+use App\Http\Controllers\Admin\CarsController;
 use App\Http\Controllers\Admin\CarSeatController;
 use App\Http\Controllers\Admin\CarStatusController;
 use App\Http\Controllers\Admin\CarTransmissionController;
 use App\Http\Controllers\Admin\CarTypeController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Customer\CarController;
+use App\Http\Controllers\Customer\CarController as CustomerCarController;
 use App\Http\Controllers\Customer\CarRentalController;
 use App\Http\Controllers\Customer\CustomerDocumentController;
 use App\Http\Controllers\ProfileController;
@@ -22,10 +22,10 @@ Route::get('/', function () {
 })->name('welcome');
 
 // Listă mașini
-Route::get('/cars', [CarController::class, 'index'])->name('customer.cars.index');
+Route::get('/cars', [CustomerCarController::class, 'index'])->name('customer.cars.index');
 
 // Detalii mașină
-Route::get('/cars/{car}', [CarController::class, 'show'])->name('customer.cars.show');
+Route::get('/cars/{car}', [CustomerCarController::class, 'show'])->name('customer.cars.show');
 
 Route::post('/cars/{car}/rent', [CarRentalController::class, 'store'])->name('customer.cars.rent');
 
@@ -45,24 +45,67 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+// Route::middleware(['auth', 'admin'])->group(function () {
+//     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
-    Route::get('admin/customers', [CustomerController::class, 'index'])->name('admin.customers.index');
-    Route::get('admin/customer/{user}', [CustomerController::class, 'show'])->name('admin.customer.show');
-    Route::post('admin/customer/documents/{id}/approve', [CustomerController::class, 'approve'])->name('admin.customer.documents.approve');
-    Route::post('/admin/customer/documents/{id}/reject', [CustomerController::class, 'reject'])->name('admin.customer.documents.reject');
-    Route::delete('/admin/customer-documents/{document}', [CustomerController::class, 'destroyDocument'])->name('admin.customer.documents.destroy');
+//     Route::get('admin/customers', [CustomerController::class, 'index'])->name('admin.customers.index');
+//     Route::get('admin/customer/{user}', [CustomerController::class, 'show'])->name('admin.customer.show');
+//     Route::post('admin/customer/documents/{id}/approve', [CustomerController::class, 'approve'])->name('admin.customer.documents.approve');
+//     Route::post('/admin/customer/documents/{id}/reject', [CustomerController::class, 'reject'])->name('admin.customer.documents.reject');
+//     Route::delete('/admin/customer-documents/{document}', [CustomerController::class, 'destroyDocument'])->name('admin.customer.documents.destroy');
 
-    Route::resource('admin/cars', AdminCarController::class);
-    Route::resource('admin/cars/brands', CarBrandController::class);
-    Route::resource('admin/cars/colors', CarColorController::class);
-    Route::resource('admin/cars/fuels', CarFuelController::class);
-    Route::resource('admin/cars/models', CarModelController::class);
-    Route::resource('admin/cars/seats', CarSeatController::class);
-    Route::resource('admin/cars/statuses', CarStatusController::class);
-    Route::resource('admin/cars/transmissions', CarTransmissionController::class);
-    Route::resource('admin/cars/types', CarTypeController::class);
-});
+
+//     Route::resource('admin/cars/brands', CarBrandController::class);
+//     Route::resource('admin/cars/colors', CarColorController::class);
+//     Route::resource('admin/cars/fuels', CarFuelController::class);
+//     Route::resource('admin/cars/models', CarModelController::class);
+//     Route::resource('admin/cars/seats', CarSeatController::class);
+//     Route::resource('admin/cars/statuses', CarStatusController::class);
+//     Route::resource('admin/cars/transmissions', CarTransmissionController::class);
+//     Route::resource('admin/cars/types', CarTypeController::class);
+
+//     Route::resource('admin/cars', CarsController::class);
+// });
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('dashboard', [DashboardController::class, 'index'])
+            ->name('dashboard');
+
+
+        // CUSTOMERS
+        Route::get('customers', [CustomerController::class, 'index'])
+            ->name('customers.index');
+
+        Route::get('customer/{user}', [CustomerController::class, 'show'])
+            ->name('customer.show');
+
+        Route::post('customer/documents/{id}/approve', [CustomerController::class, 'approve'])
+            ->name('customer.documents.approve');
+
+        Route::post('customer/documents/{id}/reject', [CustomerController::class, 'reject'])
+            ->name('customer.documents.reject');
+
+        Route::delete('customer-documents/{document}', [CustomerController::class, 'destroyDocument'])
+            ->name('customer.documents.destroy');
+
+
+        // LOOKUP TABLES CARS
+        Route::resource('cars/brands', CarBrandController::class);
+        Route::resource('cars/colors', CarColorController::class);
+        Route::resource('cars/fuels', CarFuelController::class);
+        Route::resource('cars/models', CarModelController::class);
+        Route::resource('cars/seats', CarSeatController::class);
+        Route::resource('cars/statuses', CarStatusController::class);
+        Route::resource('cars/transmissions', CarTransmissionController::class);
+        Route::resource('cars/types', CarTypeController::class);
+
+
+        // MAIN CARS RESOURCE
+        Route::resource('cars', CarsController::class);
+    });
 
 require __DIR__ . '/auth.php';

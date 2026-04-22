@@ -29,7 +29,7 @@ class CarBrandController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('brands.index')->with('success', 'Brand added successfully.');
+        return redirect()->route('admin.brands.index')->with('success', 'Brand added successfully.');
     }
 
     // Update brand
@@ -44,13 +44,13 @@ class CarBrandController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');
+        return redirect()->route('admin.brands.index')->with('success', 'Brand updated successfully.');
     }
 
     // Destroy brand
     public function destroy(CarBrand $brand)
     {
         $brand->delete();
-        return redirect()->route('brands.index')->with('success', 'Brand deleted successfully.');
+        return redirect()->route('admin.brands.index')->with('success', 'Brand deleted successfully.');
     }
 }

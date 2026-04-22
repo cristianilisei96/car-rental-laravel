@@ -29,7 +29,7 @@ class CarStatusController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('statuses.index')->with('success', 'Status added successfully!');
+        return redirect()->route('admin.statuses.index')->with('success', 'Status added successfully!');
     }
 
     // Update statu
@@ -44,13 +44,13 @@ class CarStatusController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('statuses.index')->with('success', 'Status updated successfully.');
+        return redirect()->route('admin.statuses.index')->with('success', 'Status updated successfully.');
     }
 
     // Destroy statu
     public function destroy(CarStatus $status)
     {
         $status->delete();
-        return redirect()->route('statuses.index')->with('success', 'Status deleted successfully!');
+        return redirect()->route('admin.statuses.index')->with('success', 'Status deleted successfully!');
     }
 }

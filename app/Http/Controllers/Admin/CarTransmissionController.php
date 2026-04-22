@@ -29,7 +29,7 @@ class CarTransmissionController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('transmissions.index')->with('success', 'Transmission added successfully!');
+        return redirect()->route('admin.transmissions.index')->with('success', 'Transmission added successfully!');
     }
 
     // Update transmission
@@ -44,13 +44,13 @@ class CarTransmissionController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('transmissions.index')->with('success', 'Transmission updated successfully.');
+        return redirect()->route('admin.transmissions.index')->with('success', 'Transmission updated successfully.');
     }
 
     // Destroy transmission
     public function destroy(CarTransmissions $transmission)
     {
         $transmission->delete();
-        return redirect()->route('transmissions.index')->with('success', 'Transmission deleted successfully!');
+        return redirect()->route('admin.transmissions.index')->with('success', 'Transmission deleted successfully!');
     }
 }

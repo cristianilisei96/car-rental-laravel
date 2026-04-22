@@ -29,7 +29,7 @@ class CarSeatController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('seats.index')->with('success', 'Seat added successfully!');
+        return redirect()->route('admin.seats.index')->with('success', 'Seat added successfully!');
     }
 
     // Update seat
@@ -44,13 +44,13 @@ class CarSeatController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('seats.index')->with('success', 'Seat updated successfully.');
+        return redirect()->route('admin.seats.index')->with('success', 'Seat updated successfully.');
     }
 
     // Destroy seat
     public function destroy(CarSeat $seat)
     {
         $seat->delete();
-        return redirect()->route('seats.index')->with('success', 'Seat deleted successfully!');
+        return redirect()->route('admin.seats.index')->with('success', 'Seat deleted successfully!');
     }
 }

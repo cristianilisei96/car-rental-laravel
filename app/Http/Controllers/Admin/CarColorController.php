@@ -29,7 +29,7 @@ class CarColorController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('colors.index')->with('success', 'Color added successfully!');
+        return redirect()->route('admin.colors.index')->with('success', 'Color added successfully!');
     }
 
     // Update color
@@ -44,13 +44,13 @@ class CarColorController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('colors.index')->with('success', 'Color updated successfully!');
+        return redirect()->route('admin.colors.index')->with('success', 'Color updated successfully!');
     }
 
     // Destroy color
     public function destroy(CarColor $color)
     {
         $color->delete();
-        return redirect()->route('colors.index')->with('success', 'Color deleted successfully!');
+        return redirect()->route('admin.colors.index')->with('success', 'Color deleted successfully!');
     }
 }

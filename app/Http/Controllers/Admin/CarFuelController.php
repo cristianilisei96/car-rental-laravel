@@ -29,7 +29,7 @@ class CarFuelController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('fuels.index')->with('success', 'Fuel added successfully!');
+        return redirect()->route('admin.fuels.index')->with('success', 'Fuel added successfully!');
     }
 
     // Update fuel
@@ -44,13 +44,13 @@ class CarFuelController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('fuels.index')->with('success', 'Fuel updated successfully.');
+        return redirect()->route('admin.fuels.index')->with('success', 'Fuel updated successfully.');
     }
 
     // Destroy fuel
     public function destroy(CarFuel $fuel)
     {
         $fuel->delete();
-        return redirect()->route('fuels.index')->with('success', 'Fuel deleted successfully!');
+        return redirect()->route('admin.fuels.index')->with('success', 'Fuel deleted successfully!');
     }
 }

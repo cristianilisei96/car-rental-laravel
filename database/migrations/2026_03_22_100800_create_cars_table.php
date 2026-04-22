@@ -17,11 +17,11 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->decimal('price_per_day', 8, 2);
             $table->integer('year');
-            $table->foreignId('brand_id')->constrained()->onDelete('cascade');
-            $table->foreignId('model_id')->constrained()->onDelete('cascade');
-            $table->foreignId('color_id')->constrained()->onDelete('cascade');
-            $table->foreignId('fuel_id')->constrained()->onDelete('cascade');
-            $table->foreignId('seats_id')->constrained()->onDelete('cascade');
+            $table->foreignId('brand_id')->constrained('cars_brands')->onDelete('cascade');
+            $table->foreignId('model_id')->constrained('cars_models')->onDelete('cascade');
+            $table->foreignId('color_id')->constrained('cars_colors')->onDelete('cascade');
+            $table->foreignId('fuel_id')->constrained('cars_fuels')->onDelete('cascade');
+            $table->foreignId('seats_id')->constrained('cars_seats')->onDelete('cascade');
             $table->timestamps();
         });
     }

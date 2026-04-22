@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Car;
+use App\Models\CarBrand;
+use App\Models\CarColor;
 use Illuminate\Http\Request;
 
-class CarController extends Controller
+class CarsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +17,9 @@ class CarController extends Controller
     {
         // $fuels = CarFuel::orderBy('id', 'desc')->paginate(10);
         $cars = Car::with('mainImage')->orderBy('id', 'desc')->paginate(10);
-        return view('admin.cars.index', compact('cars'));
+        $brands = CarBrand::all();
+        $colors = CarColor::all();
+        return view('admin.cars.index', compact('cars', 'brands', 'colors'));
     }
 
     /**

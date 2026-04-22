@@ -33,7 +33,7 @@ class CarModelController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('models.index')->with('success', 'Model added successfully!');
+        return redirect()->route('admin.models.index')->with('success', 'Model added successfully!');
     }
 
     // Update model
@@ -51,13 +51,13 @@ class CarModelController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('models.index')->with('success', 'Model updated successfully.');
+        return redirect()->route('admin.models.index')->with('success', 'Model updated successfully.');
     }
 
     // Destroy model
-    public function destroy(CarModel $car_model)
+    public function destroy(CarModel $model)
     {
-        $car_model->delete();
-        return redirect()->route('cars_models.index')->with('success', 'Model deleted successfully!');
+        $model->delete();
+        return redirect()->route('admin.models.index')->with('success', 'Model deleted successfully!');
     }
 }

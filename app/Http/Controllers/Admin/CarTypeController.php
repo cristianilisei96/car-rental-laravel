@@ -29,7 +29,7 @@ class CarTypeController extends Controller
             'created_at' => now(),
         ]);
 
-        return redirect()->route('types.index')->with('success', 'Car type added successfully!');
+        return redirect()->route('admin.types.index')->with('success', 'Car type added successfully!');
     }
 
     // Update car type
@@ -44,13 +44,13 @@ class CarTypeController extends Controller
             'updated_at' => now(),
         ]);
 
-        return redirect()->route('types.index')->with('success', 'Types updated successfully.');
+        return redirect()->route('admin.types.index')->with('success', 'Types updated successfully.');
     }
 
     // Destroy types
     public function destroy(CarTypes $type)
     {
         $type->delete();
-        return redirect()->route('types.index')->with('success', 'Types deleted successfully!');
+        return redirect()->route('admin.types.index')->with('success', 'Types deleted successfully!');
     }
 }
