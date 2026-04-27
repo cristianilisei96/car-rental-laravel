@@ -10,7 +10,7 @@ class CarsAttributesSeeder extends Seeder
     public function run(): void
     {
         // Statuses
-        DB::table('cars_statuses')->insert([
+        DB::table('car_statuses')->insert([
             [
                 'name' => 'Available',
                 'created_at' => now(),
@@ -26,7 +26,7 @@ class CarsAttributesSeeder extends Seeder
         ]);
 
         // Brands
-        DB::table('cars_brands')->insert([
+        DB::table('car_brands')->insert([
             ['name' => 'Abarth', 'created_at' => now()],
             ['name' => 'Alfa Romeo', 'created_at' => now()],
             ['name' => 'Audi', 'created_at' => now()],
@@ -73,7 +73,7 @@ class CarsAttributesSeeder extends Seeder
         ]);
 
         // Colors
-        DB::table('cars_colors')->insert([
+        DB::table('car_colors')->insert([
             ['name' => 'White', 'created_at' => now()],
             ['name' => 'Black', 'created_at' => now()],
             ['name' => 'Silver', 'created_at' => now()],
@@ -89,7 +89,7 @@ class CarsAttributesSeeder extends Seeder
         ]);
 
         // Fuels
-        DB::table('cars_fuels')->insert([
+        DB::table('car_fuels')->insert([
             ['name' => 'Gasolin', 'created_at' => now()],
             ['name' => 'Diesel', 'created_at' => now()],
             ['name' => 'Hybrid', 'created_at' => now()],
@@ -97,7 +97,7 @@ class CarsAttributesSeeder extends Seeder
         ]);
 
         // Seats
-        DB::table('cars_seats')->insert([
+        DB::table('car_seats')->insert([
             [
                 'seats' => 2,
                 'created_at' => now(),
@@ -117,7 +117,7 @@ class CarsAttributesSeeder extends Seeder
         ]);
 
         // Transmissions
-        DB::table('cars_transmissions')->insert([
+        DB::table('car_transmissions')->insert([
             [
                 'name' => 'Manual',
                 'created_at' => now(),
@@ -133,7 +133,7 @@ class CarsAttributesSeeder extends Seeder
         ]);
 
         // Types
-        DB::table('cars_types')->insert([
+        DB::table('car_types')->insert([
             [
                 'name' => 'SUV',
                 'created_at' => now(),

@@ -17,13 +17,12 @@
                     </x-nav-link> --}}
 
                     @if (Auth::user()->is_admin)
-                        <x-nav-link :href="route('admin.brands.index')" :active="request()->routeIs('brands.*')">
+                        {{-- <x-nav-link :href="route('admin.brands.index')" :active="request()->routeIs('brands.*')">
                             {{ __('Cars Brands') }}
-                        </x-nav-link>
+                        </x-nav-link> --}}
                         {{-- <x-nav-link :href="route('cars.index')" :active="request()->routeIs('cars.*')">
                             {{ __('Cars') }}
                         </x-nav-link> --}}
-                        <!-- Poți adăuga aici alte link-uri doar pentru admin -->
                     @endif
                 </div>
             </div>
