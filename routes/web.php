@@ -106,6 +106,8 @@ Route::middleware(['auth', 'admin'])
 
         // MAIN CARS RESOURCE
         Route::resource('cars', CarsController::class);
+
+        Route::post('cars/{car}/set-main-image/{image}', [CarsController::class, 'setMainImage'])->name('cars.setMainImage');
     });
 
 require __DIR__ . '/auth.php';

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\CarTransmissions;
+use App\Models\CarTransmission;
 use Illuminate\Http\Request;
 
 class CarTransmissionController extends Controller
@@ -11,7 +11,7 @@ class CarTransmissionController extends Controller
     // View list of the transmissions
     public function index()
     {
-        $transmissions = CarTransmissions::orderBy('id', 'desc')->paginate(10);
+        $transmissions = CarTransmission::orderBy('id', 'desc')->paginate(10);
         return view('admin.cars.transmissions.index', compact('transmissions'));
     }
 
@@ -19,12 +19,12 @@ class CarTransmissionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:cars_transmissions,name'
+            'name' => 'required|string|max:255|unique:car_transmissions,name'
         ], [
             'name.unique' => 'This transmission already exists in database.'
         ]);
 
-        CarTransmissions::create([
+        CarTransmission::create([
             'name' => $request->name,
             'created_at' => now(),
         ]);
@@ -33,10 +33,10 @@ class CarTransmissionController extends Controller
     }
 
     // Update transmission
-    public function update(Request $request, CarTransmissions $transmission)
+    public function update(Request $request, CarTransmission $transmission)
     {
         $request->validate([
-            'name' => 'required|string|unique:cars_transmissions,name,' . $transmission->id . '|max:255',
+            'name' => 'required|string|unique:car_transmissions,name,' . $transmission->id . '|max:255',
         ]);
 
         $transmission->update([
@@ -48,7 +48,7 @@ class CarTransmissionController extends Controller
     }
 
     // Destroy transmission
-    public function destroy(CarTransmissions $transmission)
+    public function destroy(CarTransmission $transmission)
     {
         $transmission->delete();
         return redirect()->route('admin.transmissions.index')->with('success', 'Transmission deleted successfully!');

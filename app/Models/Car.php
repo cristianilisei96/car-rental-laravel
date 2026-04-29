@@ -7,6 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Car extends Model
 {
+    protected $fillable = [
+        'name',
+        'brand_id',
+        'model_id',
+        'color_id',
+        'fuel_id',
+        'seat_id',
+        'type_id',
+        'transmission_id',
+        'status_id',
+        'year',
+        'price_per_day',
+        'description',
+    ];
+
     public function images()
     {
         return $this->hasMany(CarImage::class);
@@ -49,11 +64,11 @@ class Car extends Model
 
     public function transmission()
     {
-        return $this->belongsTo(CarTransmissions::class);
+        return $this->belongsTo(CarTransmission::class);
     }
 
     public function type()
     {
-        return $this->belongsTo(CarTypes::class);
+        return $this->belongsTo(CarType::class);
     }
 }

@@ -10,8 +10,8 @@ use App\Models\CarFuel;
 use App\Models\CarModel;
 use App\Models\CarSeat;
 use App\Models\CarStatus;
-use App\Models\CarTransmissions;
-use App\Models\CarTypes;
+use App\Models\CarTransmission;
+use App\Models\CarType;
 use App\Models\User;
 
 // use App\Models\Car;       // dacă vrei să numeri și mașini
@@ -28,8 +28,8 @@ class DashboardController extends Controller
         $fuelsCount = CarFuel::count();
         $seatsCount = CarSeat::count();
         $statusesCount = CarStatus::count();
-        $transmissionsCount = CarTransmissions::count();
-        $typesCount = CarTypes::count();
+        $transmissionsCount = CarTransmission::count();
+        $typesCount = CarType::count();
         // $carsCount   = Car::count();       // număr total mașini (dacă ai tabelul Car)
 
         // return view('admin.dashboard', compact('brandsCount', 'carsCount'));

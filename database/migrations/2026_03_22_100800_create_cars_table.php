@@ -19,9 +19,12 @@ return new class extends Migration
             $table->integer('year');
             $table->foreignId('brand_id')->constrained('car_brands')->onDelete('cascade');
             $table->foreignId('model_id')->constrained('car_models')->onDelete('cascade');
+            $table->foreignId('type_id')->constrained('car_types')->onDelete('cascade');
             $table->foreignId('color_id')->constrained('car_colors')->onDelete('cascade');
             $table->foreignId('fuel_id')->constrained('car_fuels')->onDelete('cascade');
-            $table->foreignId('seats_id')->constrained('car_seats')->onDelete('cascade');
+            $table->foreignId('seat_id')->constrained('car_seats')->onDelete('cascade');
+            $table->foreignId('transmission_id')->constrained('car_transmissions')->onDelete('cascade');
+            $table->foreignId('status_id')->constrained('car_statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }

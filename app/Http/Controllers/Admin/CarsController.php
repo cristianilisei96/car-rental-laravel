@@ -6,7 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Car;
 use App\Models\CarBrand;
 use App\Models\CarColor;
+use App\Models\CarFuel;
+use App\Models\CarModel;
+use App\Models\CarSeat;
+use App\Models\CarStatus;
+use App\Models\CarTransmission;
+use App\Models\CarType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CarsController extends Controller
 {
@@ -18,8 +25,15 @@ class CarsController extends Controller
         // $fuels = CarFuel::orderBy('id', 'desc')->paginate(10);
         $cars = Car::with('mainImage')->orderBy('id', 'desc')->paginate(10);
         $brands = CarBrand::all();
+        $models = CarModel::all();
         $colors = CarColor::all();
-        return view('admin.cars.index', compact('cars', 'brands', 'colors'));
+        $fuels = CarFuel::all();
+        $seats = CarSeat::all();
+        $types = CarType::all();
+        $transmissions = CarTransmission::all();
+        $statuses = CarStatus::all();
+
+        return view('admin.cars.index', compact('cars', 'brands', 'models', 'colors', 'fuels', 'seats', 'types', 'transmissions', 'statuses'));
     }
 
     /**
@@ -35,7 +49,82 @@ class CarsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:car_brands,id',
+            'model_id' => 'required|exists:car_models,id',
+            'color_id' => 'required|exists:car_colors,id',
+            'fuel_id' => 'required|exists:car_fuels,id',
+            'seat_id' => 'required|exists:car_seats,id',
+            'type_id' => 'required|exists:car_types,id',
+            'transmission_id' => 'required|exists:car_transmissions,id',
+            'status_id' => 'required|exists:car_statuses,id',
+            'year' => 'required|integer|min:1990|max:' . date('Y'),
+            'price_per_day' => 'required|numeric|min:1',
+            'description' => 'nullable|string',
+            'images' => 'nullable|array',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        ]);
+
+        DB::beginTransaction();
+        try {
+            $car = Car::create($request->only(['name', 'brand_id', 'model_id', 'type_id', 'transmission_id', 'status_id', 'color_id', 'fuel_id', 'seat_id', 'year', 'price_per_day', 'description']));
+
+            // if ($request->hasFile('images')) {
+            //     $files = $request->file('images');
+
+            //     foreach ($files as $index => $file) {
+            //         // salvezi originalul în storage/app/public/cars
+            //         $path = $file->store('cars', 'public');
+
+            //         // optional: generezi thumbnail
+            //         // $thumbPath = 'cars/thumbs/' . basename($path);
+            //         // $img = Image::make(storage_path('app/public/' . $path))->fit(400,300)->save(storage_path('app/public/' . $thumbPath));
+
+            //         // creezi rând nou (NU update/replace)
+            //         $car->images()->create([
+            //             'image_path' => $path, // sau $thumbPath pentru thumbnail
+            //             'is_main' => $index === 0 ? 1 : 0, // prima imagine încărcată devine main
+            //         ]);
+            //     }
+            // }
+
+            if ($request->hasFile('images')) {
+                $files = $request->file('images');
+                if (!is_array($files)) {
+                    $files = [$files];
+                }
+                // dd($files);
+                foreach ($files as $index => $file) {
+                    $path = $file->store('cars', 'public');
+                    $car->images()->create([
+                        'image_path' => $path,
+                        'is_main' => $index === 0 ? 1 : 0,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()->route('admin.cars.index')->with('success', 'Car created successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            // log error
+            return back()->withErrors('Something went wrong: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Set the main image for a car.
+     */
+    public function setMainImage($carId, $imageId)
+    {
+        $car = Car::findOrFail($carId);
+        foreach ($car->images as $img) {
+            $img->is_main = $img->id == $imageId ? 1 : 0;
+            $img->save();
+        }
+        return back()->with('success', 'Main image updated!');
     }
 
     /**
@@ -43,7 +132,8 @@ class CarsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $car = Car::with('images', 'brand', 'model', 'color', 'fuel', 'seat', 'type', 'transmission', 'status')->findOrFail($id);
+        return view('admin.cars.show', compact('car'));
     }
 
     /**

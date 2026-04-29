@@ -96,6 +96,13 @@ class CarsAttributesSeeder extends Seeder
             ['name' => 'Electric', 'created_at' => now()],
         ]);
 
+        // Models
+        DB::table('car_models')->insert([
+            ['brand_id' => 43, 'name' => 'XC90', 'created_at' => now()],
+            ['brand_id' => 43, 'name' => 'XC60', 'created_at' => now()],
+            ['brand_id' => 43, 'name' => 'XC30', 'created_at' => now()]
+        ]);
+
         // Seats
         DB::table('car_seats')->insert([
             [
