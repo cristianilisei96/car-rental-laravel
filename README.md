@@ -2,13 +2,17 @@
 
 ## 📌 Description
 
-This project is a car rental web application built with Laravel, designed to simulate a real-world system for managing vehicles, users, and rental processes.
+This project is a car rental web application built with Laravel, designed to simulate a real-world system for managing vehicles, users, and rental workflows.
 
-It includes role-based access control, an admin panel for managing car inventory, and a structured database for scalability and maintainability.
+It includes role-based access control, an admin panel for managing car inventory, and a normalized database structure designed for scalability and maintainability.
 
-The application is currently under active development, with new features being added continuously.
+The application is currently under active development, with a focus on implementing real-world business logic and best practices.
 
 ---
+
+## 🌐 Project Status
+
+🚧 Work in progress – core features implemented, rental system and advanced filtering in development.
 
 ## 🚀 Features
 
@@ -45,6 +49,16 @@ The application is currently under active development, with new features being a
 
 ---
 
+## 🧠 Key Concepts Implemented
+
+- Role-based authorization using middleware
+- Normalized relational database design
+- Separation of concerns (MVC architecture)
+- Dynamic data relationships (cars linked to multiple attributes)
+- File upload handling with access control
+
+---
+
 ## 🔍 Features in Progress
 
 ### Search & Availability Filtering
@@ -74,8 +88,8 @@ The application is currently under active development, with new features being a
 
 ## 🧱 Tech Stack
 
-- Laravel 13 (PHP Framework)
-- PHP 8.3
+- Laravel
+- PHP
 - MySQL
 - Tailwind CSS
 - Blade
@@ -102,54 +116,45 @@ php artisan serve
 
 ## 📸 Screenshots
 
-### Screenshot 1 – Homepage
+### Homepage
 
 <img width="2552" height="2492" alt="screenshot-1" src="https://github.com/user-attachments/assets/05fc4c86-0177-44a7-8759-4a0624323a05" />
 
-👉 Show:
-
-- Banner with car
-- Search form (even if not functional yet)
+- Homepage with search functionality for available cars.
 
 ---
 
-### Screenshot 2 – Admin Dashboard
+### Admin Dashboard
 
 <img width="2552" height="1308" alt="screenshot-2" src="https://github.com/user-attachments/assets/a2475793-a826-4c19-bc7c-0cc6aff0e13f" />
-
-👉 Show:
 
 - List of cars
 - Add car button or table view
 
 ---
 
-### Screenshot 3 – Add Car Form
+### Add Car Form
 
 <img width="2552" height="1308" alt="screenshot-3" src="https://github.com/user-attachments/assets/4b02521d-c9d4-484e-8db8-41340f65d6a2" />
-
-👉 Show:
 
 - Form fields (brand, fuel, seats, etc.)
 - This proves complexity of your system
 
 ---
 
-### Screenshot 4 – Database Structure
+### Database Structure
 
 <img width="2552" height="1308" alt="screenshot-4" src="https://github.com/user-attachments/assets/0c648259-6ae1-4f8c-908c-a2d9c25a596c" />
 
-👉 Show:
+### 🔗 Database Diagram
 
-- Your migrations or DB diagram (VERY GOOD for recruiters)
+You can explore the full database structure here:
 
 ## https://dbdiagram.io/d/car-rental-laravel-db-69f23fd5c6a36f9c1bbeaf70
 
-### Screenshot 5 – Document Upload
+### Document Upload
 
 <img width="2552" height="1308" alt="screenshot-5" src="https://github.com/user-attachments/assets/6679c931-81ba-4d24-a06f-6021e67e1bea" />
-
-👉 Show:
 
 - Upload UI for customer documents
 
