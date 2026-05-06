@@ -45,28 +45,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Route::middleware(['auth', 'admin'])->group(function () {
-//     Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-
-//     Route::get('admin/customers', [CustomerController::class, 'index'])->name('admin.customers.index');
-//     Route::get('admin/customer/{user}', [CustomerController::class, 'show'])->name('admin.customer.show');
-//     Route::post('admin/customer/documents/{id}/approve', [CustomerController::class, 'approve'])->name('admin.customer.documents.approve');
-//     Route::post('/admin/customer/documents/{id}/reject', [CustomerController::class, 'reject'])->name('admin.customer.documents.reject');
-//     Route::delete('/admin/customer-documents/{document}', [CustomerController::class, 'destroyDocument'])->name('admin.customer.documents.destroy');
-
-
-//     Route::resource('admin/cars/brands', CarBrandController::class);
-//     Route::resource('admin/cars/colors', CarColorController::class);
-//     Route::resource('admin/cars/fuels', CarFuelController::class);
-//     Route::resource('admin/cars/models', CarModelController::class);
-//     Route::resource('admin/cars/seats', CarSeatController::class);
-//     Route::resource('admin/cars/statuses', CarStatusController::class);
-//     Route::resource('admin/cars/transmissions', CarTransmissionController::class);
-//     Route::resource('admin/cars/types', CarTypeController::class);
-
-//     Route::resource('admin/cars', CarsController::class);
-// });
-
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')

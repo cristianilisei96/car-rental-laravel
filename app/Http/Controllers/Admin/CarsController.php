@@ -14,6 +14,7 @@ use App\Models\CarTransmission;
 use App\Models\CarType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CarsController extends Controller
 {
@@ -23,7 +24,10 @@ class CarsController extends Controller
     public function index()
     {
         // $fuels = CarFuel::orderBy('id', 'desc')->paginate(10);
-        $cars = Car::with('mainImage')->orderBy('id', 'desc')->paginate(10);
+        // $cars = Car::with('mainImage')->orderBy('id', 'desc')->paginate(10);
+        $cars = Car::with(['mainImage', 'brand', 'model', 'status'])
+            ->orderBy('id', 'desc')
+            ->paginate(10);
         $brands = CarBrand::all();
         $models = CarModel::all();
         $colors = CarColor::all();
@@ -62,39 +66,20 @@ class CarsController extends Controller
             'year' => 'required|integer|min:1990|max:' . date('Y'),
             'price_per_day' => 'required|numeric|min:1',
             'description' => 'nullable|string',
-            'images' => 'nullable|array',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'images' => 'required|array|min:1|max:9',
+            'images.*' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         DB::beginTransaction();
         try {
             $car = Car::create($request->only(['name', 'brand_id', 'model_id', 'type_id', 'transmission_id', 'status_id', 'color_id', 'fuel_id', 'seat_id', 'year', 'price_per_day', 'description']));
 
-            // if ($request->hasFile('images')) {
-            //     $files = $request->file('images');
-
-            //     foreach ($files as $index => $file) {
-            //         // salvezi originalul în storage/app/public/cars
-            //         $path = $file->store('cars', 'public');
-
-            //         // optional: generezi thumbnail
-            //         // $thumbPath = 'cars/thumbs/' . basename($path);
-            //         // $img = Image::make(storage_path('app/public/' . $path))->fit(400,300)->save(storage_path('app/public/' . $thumbPath));
-
-            //         // creezi rând nou (NU update/replace)
-            //         $car->images()->create([
-            //             'image_path' => $path, // sau $thumbPath pentru thumbnail
-            //             'is_main' => $index === 0 ? 1 : 0, // prima imagine încărcată devine main
-            //         ]);
-            //     }
-            // }
-
             if ($request->hasFile('images')) {
                 $files = $request->file('images');
                 if (!is_array($files)) {
                     $files = [$files];
                 }
-                // dd($files);
+
                 foreach ($files as $index => $file) {
                     $path = $file->store('cars', 'public');
                     $car->images()->create([
@@ -157,6 +142,30 @@ class CarsController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $car = Car::with('images')->findOrFail($id);
+
+        DB::beginTransaction();
+
+        try {
+            foreach ($car->images as $image) {
+                if ($image->image_path && Storage::disk('public')->exists($image->image_path)) {
+                    Storage::disk('public')->delete($image->image_path);
+                }
+
+                $image->delete();
+            }
+
+            $car->delete();
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.cars.index')
+                ->with('success', 'Car deleted successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return back()->withErrors('Something went wrong: ' . $e->getMessage());
+        }
     }
 }

@@ -8,7 +8,7 @@
                     @foreach ($images as $index => $image)
                         <div x-show="active === {{ $index }}" class="relative w-full flex flex-col items-center">
                             <img src="{{ asset('storage/' . $image->image_path) }}" alt="Car image"
-                                class="rounded-lg aspect-video object-contain w-full max-w-5xlll shadow border-4 {{ $image->is_main ? 'border-green-500' : 'border-transparent' }} transition">
+                                class="rounded-lg aspect-video object-contain w-full max-w-5xl shadow border-4 {{ $image->is_main ? 'border-green-500' : 'border-transparent' }} transition">
                             @if ($image->is_main)
                                 <span
                                     class="absolute top-4 left-4 bg-green-500 text-white text-md px-3 py-1 rounded shadow">Main</span>

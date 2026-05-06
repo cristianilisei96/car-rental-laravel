@@ -98,6 +98,10 @@ class CarsAttributesSeeder extends Seeder
 
         // Models
         DB::table('car_models')->insert([
+            ['brand_id' => 43, 'name' => 'EX90', 'created_at' => now()],
+            ['brand_id' => 43, 'name' => 'EX60', 'created_at' => now()],
+            ['brand_id' => 43, 'name' => 'EX40', 'created_at' => now()],
+            ['brand_id' => 43, 'name' => 'EX30', 'created_at' => now()],
             ['brand_id' => 43, 'name' => 'XC90', 'created_at' => now()],
             ['brand_id' => 43, 'name' => 'XC60', 'created_at' => now()],
             ['brand_id' => 43, 'name' => 'XC30', 'created_at' => now()]
