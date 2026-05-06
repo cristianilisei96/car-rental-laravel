@@ -23,8 +23,6 @@ class CarsController extends Controller
      */
     public function index()
     {
-        // $fuels = CarFuel::orderBy('id', 'desc')->paginate(10);
-        // $cars = Car::with('mainImage')->orderBy('id', 'desc')->paginate(10);
         $cars = Car::with(['mainImage', 'brand', 'model', 'status'])
             ->orderBy('id', 'desc')
             ->paginate(10);
@@ -126,7 +124,29 @@ class CarsController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $car = Car::with(['images', 'brand', 'model', 'color', 'fuel', 'seat', 'type', 'transmission', 'status'])
+            ->findOrFail($id);
+
+        $brands = CarBrand::all();
+        $models = CarModel::all();
+        $colors = CarColor::all();
+        $fuels = CarFuel::all();
+        $seats = CarSeat::all();
+        $types = CarType::all();
+        $transmissions = CarTransmission::all();
+        $statuses = CarStatus::all();
+
+        return view('admin.cars.edit', compact(
+            'car',
+            'brands',
+            'models',
+            'colors',
+            'fuels',
+            'seats',
+            'types',
+            'transmissions',
+            'statuses'
+        ));
     }
 
     /**
@@ -134,7 +154,74 @@ class CarsController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $car = Car::with('images')->findOrFail($id);
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:car_brands,id',
+            'model_id' => 'required|exists:car_models,id',
+            'color_id' => 'required|exists:car_colors,id',
+            'fuel_id' => 'required|exists:car_fuels,id',
+            'seat_id' => 'required|exists:car_seats,id',
+            'type_id' => 'required|exists:car_types,id',
+            'transmission_id' => 'required|exists:car_transmissions,id',
+            'status_id' => 'required|exists:car_statuses,id',
+            'year' => 'required|integer|min:1990|max:' . date('Y'),
+            'price_per_day' => 'required|numeric|min:1',
+            'description' => 'nullable|string',
+            'images' => 'nullable|array|max:8',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $car->update($request->only([
+                'name',
+                'brand_id',
+                'model_id',
+                'type_id',
+                'transmission_id',
+                'status_id',
+                'color_id',
+                'fuel_id',
+                'seat_id',
+                'year',
+                'price_per_day',
+                'description',
+            ]));
+
+            if ($request->hasFile('images')) {
+                $files = $request->file('images');
+
+                if (!is_array($files)) {
+                    $files = [$files];
+                }
+
+                $hasMainImage = $car->images()->where('is_main', true)->exists();
+
+                foreach ($files as $index => $file) {
+                    $path = $file->store('cars', 'public');
+
+                    $car->images()->create([
+                        'image_path' => $path,
+                        'is_main' => ! $hasMainImage && $index === 0,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return redirect()
+                ->route('admin.cars.show', $car->id)
+                ->with('success', 'Car updated successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return back()
+                ->withErrors('Something went wrong: ' . $e->getMessage())
+                ->withInput();
+        }
     }
 
     /**
