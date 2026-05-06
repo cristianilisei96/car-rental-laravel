@@ -17,18 +17,9 @@
             </a>
         </div>
 
-        @if ($errors->any())
-            <div
-                class="mb-6 flex items-start sm:items-center px-4 py-3 rounded-md bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100">
-                <svg class="w-4 h-4 me-2 shrink-0 mt-0.5 sm:mt-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" fill="none" viewBox="0 0 24 24">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 11h2v5m-2 0h4m-2.592-8.5h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-
-                {{ $errors->first() }}
-            </div>
-        @endif
+        <div class="mb-6">
+            <x-flash-messages />
+        </div>
 
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
             <form action="{{ route('admin.cars.update', $car->id) }}" method="POST" enctype="multipart/form-data"

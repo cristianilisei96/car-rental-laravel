@@ -1,5 +1,9 @@
 <x-admin.layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="mb-6">
+            <x-flash-messages />
+        </div>
+
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden p-6">
             <!-- Carousel/Slideshow -->
             @php $images = $car->images->take(9); @endphp
