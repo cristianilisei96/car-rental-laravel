@@ -7,6 +7,7 @@ use App\Models\Car;
 use App\Models\CarBrand;
 use App\Models\CarColor;
 use App\Models\CarFuel;
+use App\Models\CarImage;
 use App\Models\CarModel;
 use App\Models\CarSeat;
 use App\Models\CarStatus;
@@ -64,7 +65,7 @@ class CarsController extends Controller
             'year' => 'required|integer|min:1990|max:' . date('Y'),
             'price_per_day' => 'required|numeric|min:1',
             'description' => 'nullable|string',
-            'images' => 'required|array|min:1|max:9',
+            'images' => 'required|array|min:1|max:12',
             'images.*' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
@@ -169,7 +170,7 @@ class CarsController extends Controller
             'year' => 'required|integer|min:1990|max:' . date('Y'),
             'price_per_day' => 'required|numeric|min:1',
             'description' => 'nullable|string',
-            'images' => 'nullable|array|max:8',
+            'images' => 'nullable|array|max:12',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
@@ -213,7 +214,7 @@ class CarsController extends Controller
             DB::commit();
 
             return redirect()
-                ->route('admin.cars.show', $car->id)
+                ->route('admin.cars.edit', $car->id)
                 ->with('success', 'Car updated successfully!');
         } catch (\Throwable $e) {
             DB::rollBack();
@@ -221,6 +222,48 @@ class CarsController extends Controller
             return back()
                 ->withErrors('Something went wrong: ' . $e->getMessage())
                 ->withInput();
+        }
+    }
+
+    /**
+     * Remove a specific image from a car.
+     */
+    public function destroyImage(Car $car, CarImage $image)
+    {
+        if ($image->car_id !== $car->id) {
+            abort(404);
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $wasMainImage = (bool) $image->is_main;
+
+            if ($image->image_path && Storage::disk('public')->exists($image->image_path)) {
+                Storage::disk('public')->delete($image->image_path);
+            }
+
+            $image->delete();
+
+            if ($wasMainImage) {
+                $nextImage = $car->images()
+                    ->orderBy('id')
+                    ->first();
+
+                if ($nextImage) {
+                    $nextImage->update([
+                        'is_main' => true,
+                    ]);
+                }
+            }
+
+            DB::commit();
+
+            return back()->with('success', 'Image deleted successfully!');
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            return back()->withErrors('Something went wrong: ' . $e->getMessage());
         }
     }
 
