@@ -127,12 +127,24 @@
                         <x-slot name="content">
                             @if (Auth::user()->is_admin === 1)
                             @else
-                                <x-dropdown-link :href="route('profile.edit')">
-                                    {{ __('Profile') }}
+                                <x-dropdown-link :href="route('dashboard')">
+                                    {{ __('Dashboard') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('cars.index')">
+                                    {{ __('Cars') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('customer.favorites.index')">
+                                    {{ __('Favorites') }}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('customer.document.create')">
                                     {{ __('My Document') }}
+                                </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('profile.edit')">
+                                    {{ __('Profile') }}
                                 </x-dropdown-link>
                             @endif
 

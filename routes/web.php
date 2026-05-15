@@ -14,10 +14,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Customer\CarController as CustomerCarController;
 use App\Http\Controllers\Customer\CarRentalController;
 use App\Http\Controllers\Customer\CustomerDocumentController;
+use App\Http\Controllers\Customer\FavoriteController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Car;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PublicCarController;
 
 Route::get('/', function () {
     $featuredCars = Car::with([
@@ -35,14 +35,11 @@ Route::get('/', function () {
     return view('home', compact('featuredCars'));
 })->name('home');
 
-// Show public car details
-Route::get('/cars/{car}', [PublicCarController::class, 'show'])->name('cars.show');
-
 // List cars
-// Route::get('/cars', [CustomerCarController::class, 'index'])->name('customer.cars.index');
+Route::get('/cars', [CustomerCarController::class, 'index'])->name('cars.index');
 
-// Car details
-// Route::get('/cars/{car}', [CustomerCarController::class, 'show'])->name('customer.cars.show');
+// Show public car details
+Route::get('/cars/{car}', [CustomerCarController::class, 'show'])->name('cars.show');
 
 Route::post('/cars/{car}/rent', [CarRentalController::class, 'store'])->name('customer.cars.rent');
 
@@ -60,6 +57,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/cars/{car}/favorite', [FavoriteController::class, 'toggle'])
+        ->name('customer.favorites.toggle');
+
+    Route::get('/favorites', [FavoriteController::class, 'index'])
+        ->name('customer.favorites.index');
 });
 
 Route::middleware(['auth', 'admin'])

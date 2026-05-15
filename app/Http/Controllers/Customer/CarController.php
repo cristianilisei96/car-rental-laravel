@@ -9,12 +9,35 @@ class CarController extends Controller
 {
     public function index()
     {
-        $cars = Car::all();
-        return view('customers.cars.index', compact('cars'));
+        $cars = Car::with([
+            'brand',
+            'model',
+            'type',
+            'color',
+            'fuel',
+            'seat',
+            'transmission',
+            'status',
+            'images',
+        ])->latest()->paginate(9);
+
+        return view('customer.cars.index', compact('cars'));
     }
 
     public function show(Car $car)
     {
-        return view('customers.cars.show', compact('car'));
+        $car->load([
+            'brand',
+            'model',
+            'type',
+            'color',
+            'fuel',
+            'seat',
+            'transmission',
+            'status',
+            'images',
+        ]);
+
+        return view('customer.cars.show', compact('car'));
     }
 }

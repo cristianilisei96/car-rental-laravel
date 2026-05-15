@@ -57,7 +57,7 @@
     <main class="max-w-7xl mx-auto px-6 py-10">
 
         <div class="mb-6">
-            <a href="{{ route('home') }}#featured-cars" class="text-sm text-gray-600 hover:text-black">
+            <a href="{{ route('cars.index') }}#featured-cars" class="text-sm text-gray-600 hover:text-black">
                 ← Back to cars
             </a>
         </div>

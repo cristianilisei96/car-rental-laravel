@@ -13,7 +13,7 @@ class CarRentalController extends Controller
     {
         $user = auth()->user();
 
-        // Restricție: doar clienți cu document aprobat pot închiria
+        // Restrictie: doar clienti cu document aprobat pot inchiria
         if (
             $user->is_admin ||
             !$user->documents()->where('status', 'approved')->exists()
@@ -21,16 +21,13 @@ class CarRentalController extends Controller
             return back()->with('error', 'You must have an approved document to rent a car.');
         }
 
-        // Aici poți adăuga validare pentru datele de închiriere
         // $request->validate([...]);
 
-        // Creezi rezervarea (exemplu simplu)
         Rental::create([
             'user_id' => $user->id,
             'car_id' => $car->id,
             'pickup_date' => $request->pickup_date,
             'return_date' => $request->return_date,
-            // alte câmpuri...
         ]);
 
         return back()->with('success', 'Car rented successfully!');

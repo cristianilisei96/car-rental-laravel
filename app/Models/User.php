@@ -48,4 +48,22 @@ class User extends Authenticatable
             ->where('status', 'approved')
             ->latestOfMany();
     }
+
+    public function favorites()
+    {
+        return $this->hasMany(\App\Models\Favorite::class);
+    }
+
+    public function favoriteCars()
+    {
+        return $this->belongsToMany(\App\Models\Car::class, 'favorites')
+            ->withTimestamps();
+    }
+
+    public function hasFavoriteCar($carId): bool
+    {
+        return $this->favoriteCars()
+            ->where('cars.id', $carId)
+            ->exists();
+    }
 }

@@ -71,4 +71,10 @@ class Car extends Model
     {
         return $this->belongsTo(CarType::class);
     }
+
+    public function favoritedByUsers()
+    {
+        return $this->belongsToMany(\App\Models\User::class, 'favorites')
+            ->withTimestamps();
+    }
 }
