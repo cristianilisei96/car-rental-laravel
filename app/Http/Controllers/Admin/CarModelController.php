@@ -21,8 +21,8 @@ class CarModelController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:cars_models,name',
-            'brand_id' => 'required|exists:cars_brands,id',
+            'name' => 'required|string|max:255|unique:car_models,name',
+            'brand_id' => 'required|exists:car_brands,id',
         ], [
             'name.unique' => 'This model already exists in database.'
         ]);
@@ -41,8 +41,8 @@ class CarModelController extends Controller
     {
         // dd($request->all());
         $request->validate([
-            'name' => 'required|string|unique:cars_models,name,' . $model->id . '|max:255',
-            'brand_id' => 'required|exists:cars_brands,id',
+            'name' => 'required|string|unique:car_models,name,' . $model->id . '|max:255',
+            'brand_id' => 'required|exists:car_brands,id',
         ]);
 
         $model->update([

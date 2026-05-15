@@ -19,7 +19,7 @@ class CarBrandController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|unique:cars_brands,name|max:255',
+            'name' => 'required|string|unique:car_brands,name|max:255',
         ], [
             'name.unique' => 'This brand already exists in database.'
         ]);

@@ -10,7 +10,7 @@
                 Add New Model
             </button>
 
-            <!-- Modal Add model -->
+            <!-- Modal Add Model -->
             <div x-show="open" class="fixed inset-0 flex items-center justify-center z-50" style="display:none;">
                 <div class="fixed inset-0 bg-black bg-opacity-50" @click="open=false"></div>
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 z-50 w-full max-w-md">
@@ -92,10 +92,11 @@
                                     ID</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
-                                    Model</th>
+                                    Brand</th>
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
-                                    Brand</th>
+                                    Model</th>
+
                                 <th
                                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-200 uppercase tracking-wider">
                                     Created At</th>
@@ -110,9 +111,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                         {{ $model->id }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
-                                        {{ $model->name }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                         {{ $model->brand->name }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                                        {{ $model->name }}</td>
+
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-300">
                                         {{ $model->created_at }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm">

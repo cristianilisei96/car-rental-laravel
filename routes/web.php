@@ -15,11 +15,24 @@ use App\Http\Controllers\Customer\CarController as CustomerCarController;
 use App\Http\Controllers\Customer\CarRentalController;
 use App\Http\Controllers\Customer\CustomerDocumentController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Car;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+    $featuredCars = Car::with([
+        'brand',
+        'model',
+        'fuel',
+        'seat',
+        'transmission',
+        'images',
+    ])
+        ->latest()
+        ->take(3)
+        ->get();
+
+    return view('home', compact('featuredCars'));
+})->name('home');
 
 // Listă mașini
 Route::get('/cars', [CustomerCarController::class, 'index'])->name('customer.cars.index');
@@ -57,6 +70,11 @@ Route::middleware(['auth', 'admin'])
         // CUSTOMERS
         Route::get('customers', [CustomerController::class, 'index'])
             ->name('customers.index');
+
+        Route::post('/customers', [CustomerController::class, 'store'])->name('customers.store');
+
+        Route::put('/customers/{customer}', [CustomerController::class, 'update'])
+            ->name('admin.customers.update');
 
         Route::get('customer/{user}', [CustomerController::class, 'show'])
             ->name('customer.show');

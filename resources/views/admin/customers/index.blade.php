@@ -94,7 +94,12 @@
         @endif
 
         <!-- Table + Edit Modal -->
-        <div x-data="{ editOpen: false, editId: null, editName: '' }" class="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded-lg">
+        <div x-data="{
+            editOpen: false,
+            editId: null,
+            editName: '',
+            editEmail: ''
+        }" class="overflow-x-auto bg-white dark:bg-gray-800 shadow rounded-lg">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                 <thead class="bg-gray-50 dark:bg-gray-700">
                     <tr>
@@ -145,7 +150,11 @@
                                     class="px-2 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-md mr-2 font-bold">View</a>
                                 <!-- Edit Button -->
                                 <button
-                                    @click="editId={{ $customer->id }}; editName='{{ $customer->name }}'; editOpen=true;"
+                                    @click="
+                                    editId={{ $customer->id }};
+                                    editName=@js($customer->name);
+                                    editEmail=@js($customer->email);
+                                    editOpen=true;"
                                     class="px-2 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md text-md mr-2 font-bold">
                                     Edit
                                 </button>
@@ -158,22 +167,66 @@
             <!-- Edit Modal -->
             <div x-show="editOpen" class="fixed inset-0 flex items-center justify-center z-50" style="display:none;">
                 <div class="fixed inset-0 bg-black bg-opacity-50" @click="editOpen=false"></div>
+
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 z-50 w-full max-w-md">
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Edit customer</h2>
-                    <form :action="`/admin/cars/customers/${editId}`" method="POST">
+                    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">
+                        Edit customer
+                    </h2>
+
+                    <form :action="`/admin/customers/${editId}`" method="POST">
                         @csrf
                         @method('PUT')
+
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer
-                                Name</label>
-                            <input type="text" name="name" x-model="editName"
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Customer Name
+                            </label>
+
+                            <input type="text" name="name" x-model="editName" required
                                 class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400 focus:border-yellow-500 dark:text-white">
                         </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Customer Email
+                            </label>
+
+                            <input type="email" name="email" x-model="editEmail" required
+                                class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400 focus:border-yellow-500 dark:text-white">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                New Password
+                            </label>
+
+                            <input type="password" name="password"
+                                class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400 focus:border-yellow-500 dark:text-white">
+
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                Leave empty if you do not want to change the password.
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Confirm New Password
+                            </label>
+
+                            <input type="password" name="password_confirmation"
+                                class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-yellow-500 dark:focus:ring-yellow-400 focus:border-yellow-500 dark:text-white">
+                        </div>
+
                         <div class="flex justify-end">
                             <button type="button" @click="editOpen=false"
-                                class="mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 rounded-md text-sm">Cancel</button>
+                                class="mr-2 px-4 py-2 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 rounded-md text-sm">
+                                Cancel
+                            </button>
+
                             <button type="submit"
-                                class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-sm">Update</button>
+                                class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md text-sm">
+                                Update
+                            </button>
                         </div>
                     </form>
                 </div>
