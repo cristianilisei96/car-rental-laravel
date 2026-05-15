@@ -1,26 +1,43 @@
 <x-admin.layout>
-    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <x-slot name="header">
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                    Customers
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Manage customer accounts and documents.
+                </p>
+            </div>
 
-        <!-- Header și Buton Add New customer -->
-        <div class="flex justify-between items-center mb-6" x-data="{ open: false }">
-            <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Customers</h1>
-
-            <button @click="open = true"
+            <button type="button" onclick="window.dispatchEvent(new CustomEvent('open-add-customer-modal'))"
                 class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md shadow-sm dark:bg-blue-500 dark:hover:bg-blue-600">
                 Add New Customer
             </button>
+        </div>
+    </x-slot>
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+
+        <!-- Header și Buton Add New Customer -->
+        <div x-data="{ open: false }" @open-add-customer-modal.window="open = true">
 
             <!-- Modal Add Customer -->
             <div x-show="open" class="fixed inset-0 flex items-center justify-center z-50" style="display:none;">
                 <div class="fixed inset-0 bg-black bg-opacity-50" @click="open=false"></div>
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 z-50 w-full max-w-md">
                     <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-4">Add New Customer</h2>
-                    <form action="#" method="POST">
+                    <form action="{{ route('admin.customers.store') }}" method="POST">
                         @csrf
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer
                                 Name</label>
                             <input type="text" name="name" required
+                                class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:text-white">
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Customer
+                                Email</label>
+                            <input type="email" name="email" required
                                 class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:text-white">
                         </div>
                         <div class="mb-4">
@@ -32,7 +49,7 @@
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Confirm
                                 Password</label>
-                            <input type="password" name="confirm-password" required
+                            <input type="password" name="password_confirmation" required
                                 class="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:text-white">
                         </div>
                         <div class="flex justify-end">
