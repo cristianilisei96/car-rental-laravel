@@ -17,6 +17,7 @@ use App\Http\Controllers\Customer\CustomerDocumentController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Car;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PublicCarController;
 
 Route::get('/', function () {
     $featuredCars = Car::with([
@@ -34,11 +35,14 @@ Route::get('/', function () {
     return view('home', compact('featuredCars'));
 })->name('home');
 
-// Listă mașini
-Route::get('/cars', [CustomerCarController::class, 'index'])->name('customer.cars.index');
+// Show public car details
+Route::get('/cars/{car}', [PublicCarController::class, 'show'])->name('cars.show');
 
-// Detalii mașină
-Route::get('/cars/{car}', [CustomerCarController::class, 'show'])->name('customer.cars.show');
+// List cars
+// Route::get('/cars', [CustomerCarController::class, 'index'])->name('customer.cars.index');
+
+// Car details
+// Route::get('/cars/{car}', [CustomerCarController::class, 'show'])->name('customer.cars.show');
 
 Route::post('/cars/{car}/rent', [CarRentalController::class, 'store'])->name('customer.cars.rent');
 
