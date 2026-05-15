@@ -1,5 +1,27 @@
 <x-admin.layout>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="mb-6 flex items-center justify-between">
+            <div>
+                <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">
+                    {{ $car->name }}
+                </h1>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    View car details and images.
+                </p>
+            </div>
+
+            <div class="flex gap-3">
+                <a href="{{ route('admin.cars.index') }}"
+                    class="inline-flex items-center px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white text-sm font-medium rounded-md">
+                    Back to cars
+                </a>
+
+                <a href="{{ route('admin.cars.edit', $car->id) }}"
+                    class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md">
+                    Edit car
+                </a>
+            </div>
+        </div>
         <div class="mb-6">
             <x-flash-messages />
         </div>
@@ -12,19 +34,12 @@
                     @foreach ($images as $index => $image)
                         <div x-show="active === {{ $index }}" class="relative w-full flex flex-col items-center">
                             <img src="{{ asset('storage/' . $image->image_path) }}" alt="Car image"
-                                class="rounded-lg aspect-video object-contain w-full max-w-5xlll shadow border-4 {{ $image->is_main ? 'border-green-500' : 'border-transparent' }} transition">
+                                class="rounded-lg aspect-video object-containn w-full max-w-5xll shadow border-4 {{ $image->is_main ? 'border-green-500' : 'border-transparent' }} transition">
                             @if ($image->is_main)
                                 <span
-                                    class="absolute top-4 left-4 bg-green-500 text-white text-md px-3 py-1 rounded shadow">Main</span>
-                            @else
-                                <form method="POST"
-                                    action="{{ route('admin.cars.setMainImage', [$car->id, $image->id]) }}"
-                                    class="absolute top-4 left-4">
-                                    @csrf
-                                    <button type="submit"
-                                        class="bg-gray-700 bg-opacity-80 text-white text-md px-3 py-1 rounded shadow hover:bg-green-600 transition">Set
-                                        as main</button>
-                                </form>
+                                    class="absolute top-4 left-4 bg-green-500 text-white text-md px-3 py-1 rounded shadow">
+                                    Main
+                                </span>
                             @endif
                         </div>
                     @endforeach
