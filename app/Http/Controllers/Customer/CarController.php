@@ -36,6 +36,7 @@ class CarController extends Controller
             'transmission',
             'status',
             'images',
+            'discountRules',
         ]);
 
         return view('customer.cars.show', compact('car'));

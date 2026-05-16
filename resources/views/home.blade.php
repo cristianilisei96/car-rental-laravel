@@ -1,153 +1,126 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
+<x-public-layout :title="config('app.name', 'Car Rental Laravel')" navbarVariant="transparent">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>{{ config('app.name', 'Car Rental Laravel') }}</title>
-
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700" rel="stylesheet" />
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
-</head>
-
-<body class="antialiased bg-gray-100">
-
-    <!-- Navbar -->
-    <nav class="absolute w-full z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center text-white">
-            <h1 class="text-2xl font-bold">Car Rental Laravel</h1>
-
-            <div class="space-x-4">
-                <a href="#featured-cars" class="hover:underline">Featured Cars</a>
-                <a href="#how-it-works" class="hover:underline">How It Works</a>
-                @guest
-                    <a href="{{ route('login') }}" class="hover:underline">Login</a>
-                    <a href="{{ route('register') }}" class="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200">
-                        Register
-                    </a>
-                @else
-                    @if (Auth::user()->is_admin)
-                        <a href="{{ route('admin.dashboard') }}" class="hover:underline">Admin Dashboard</a>
-                    @else
-                        <a href="#" class="hover:underline">My Reservations</a>
-                        <a href="{{ route('dashboard') }}" class="hover:underline">Dashboard</a>
-                        <a href="{{ route('profile.edit') }}" class="hover:underline">Profile</a>
-                    @endif
-                    <form method="POST" action="{{ route('logout') }}" class="inline">
-                        @csrf
-                        <button type="submit"
-                            class="bg-white text-black px-4 py-2 rounded-md hover:bg-gray-200">Logout</button>
-                    </form>
-                @endguest
-            </div>
-        </div>
-    </nav>
-
-
-    <!-- Hero Section -->
-    <section class="relative h-screen bg-cover bg-center"
+    {{-- Hero Section --}}
+    <section class="relative min-h-screen bg-cover bg-center"
         style="background-image: url('https://images.unsplash.com/photo-1511919884226-fd3cad34687c');">
 
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-black/60"></div>
+        <div class="absolute inset-0 bg-black/55 dark:bg-black/75"></div>
 
-        <!-- Content -->
-        <div class="relative z-10 flex flex-col justify-center items-center h-full text-center text-white px-6">
+        <div class="relative z-10 flex min-h-screen flex-col items-center justify-center px-6 text-center text-white">
+            <p class="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-blue-300">
+                Premium Car Rental Platform
+            </p>
 
-            <h1 class="text-5xl font-bold mb-4">
+            <h1 class="max-w-4xl text-5xl font-bold leading-tight md:text-7xl">
                 Find Your Perfect Rental Car
             </h1>
 
-            <p class="mb-8 text-lg">
-                Choose your dates and discover available cars instantly
+            <p class="mt-6 max-w-2xl text-lg text-gray-200">
+                Choose your dates, compare available cars and request your reservation after document approval.
             </p>
 
+            <form action="{{ route('cars.index') }}" method="GET"
+                class="mt-10 grid w-full max-w-4xl grid-cols-1 gap-4 rounded-3xl border border-white/20 bg-white/95 p-4 text-gray-900 shadow-2xl backdrop-blur md:grid-cols-4
+    dark:border-gray-700 dark:bg-gray-900/95 dark:text-gray-100">
 
-            <!-- Search form -->
-            <form action="#" method="GET"
-                class="bg-white text-black rounded-xl shadow-lg p-6 grid md:grid-cols-3 gap-4">
-                <input id="pickup" name="pickup_date" type="date" class="border rounded-md px-4 py-2" required>
+                <div class="text-left">
+                    <label for="search"
+                        class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        Search
+                    </label>
 
-                <input id="return" name="return_date" type="date" class="border rounded-md px-4 py-2" required>
+                    <input id="search" name="search" type="text" placeholder="Volvo, SUV, electric..."
+                        class="w-full rounded-2xl border-gray-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder-gray-400
+            focus:border-blue-500 focus:ring-blue-500
+            dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder-gray-500">
+                </div>
 
-                <button type="submit" class="bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800">
-                    Search Cars
-                </button>
+                <div class="text-left">
+                    <label for="pickup"
+                        class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        Pick-up date
+                    </label>
+
+                    <input id="pickup" name="pickup_date" type="date"
+                        class="w-full rounded-2xl border-gray-200 bg-white px-4 py-3 text-sm text-gray-900
+            focus:border-blue-500 focus:ring-blue-500
+            dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
+                </div>
+
+                <div class="text-left">
+                    <label for="return"
+                        class="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        Return date
+                    </label>
+
+                    <input id="return" name="return_date" type="date"
+                        class="w-full rounded-2xl border-gray-200 bg-white px-4 py-3 text-sm text-gray-900
+            focus:border-blue-500 focus:ring-blue-500
+            dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
+                </div>
+
+                <div class="flex items-end">
+                    <button type="submit"
+                        class="w-full rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white transition hover:bg-blue-700">
+                        Search Cars
+                    </button>
+                </div>
             </form>
-
-            <script>
-                const pickup = document.getElementById('pickup');
-                const ret = document.getElementById('return');
-
-                // Setează data minimă pentru pickup la mâine
-                window.addEventListener('DOMContentLoaded', function() {
-                    const today = new Date();
-                    today.setDate(today.getDate() + 1);
-                    const minPickup = today.toISOString().split('T')[0];
-                    pickup.min = minPickup;
-                });
-
-                pickup.addEventListener('change', function() {
-                    if (pickup.value) {
-                        // Set return min la pickup + 1 zi
-                        const minDate = new Date(pickup.value);
-                        minDate.setDate(minDate.getDate() + 1);
-                        const minStr = minDate.toISOString().split('T')[0];
-                        ret.min = minStr;
-
-                        if (ret.value < minStr) {
-                            ret.value = minStr;
-                        }
-                    } else {
-                        ret.min = '';
-                    }
-                });
-            </script>
-
         </div>
     </section>
 
+    {{-- Trust / Benefits Section --}}
+    <section class="bg-white py-16 dark:bg-gray-950">
+        <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-6 text-center md:grid-cols-4">
 
-    <!-- Trust / Benefits Section -->
-    <section class="bg-white py-16">
-        <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-6 text-center">
+            <div
+                class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="mb-3 text-3xl">✅</div>
 
-            <div class="p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
-                <div class="text-3xl mb-3">✅</div>
-                <h3 class="font-semibold text-lg">Verified Customers</h3>
-                <p class="text-gray-600 text-sm mt-2">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                    Verified Customers
+                </h3>
+
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
                     Customers upload their documents before renting a car.
                 </p>
             </div>
 
-            <div class="p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
-                <div class="text-3xl mb-3">🚗</div>
-                <h3 class="font-semibold text-lg">Available Cars</h3>
-                <p class="text-gray-600 text-sm mt-2">
+            <div
+                class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="mb-3 text-3xl">🚗</div>
+
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                    Available Cars
+                </h3>
+
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
                     Browse available cars and choose the best option for your trip.
                 </p>
             </div>
 
-            <div class="p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
-                <div class="text-3xl mb-3">💶</div>
-                <h3 class="font-semibold text-lg">Transparent Prices</h3>
-                <p class="text-gray-600 text-sm mt-2">
-                    Clear daily prices with no hidden rental fees.
+            <div
+                class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="mb-3 text-3xl">💶</div>
+
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                    Transparent Prices
+                </h3>
+
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
+                    Clear daily prices with duration-based rental discounts.
                 </p>
             </div>
 
-            <div class="p-6 rounded-xl border border-gray-200 shadow-sm bg-white">
-                <div class="text-3xl mb-3">🔒</div>
-                <h3 class="font-semibold text-lg">Secure Booking</h3>
-                <p class="text-gray-600 text-sm mt-2">
+            <div
+                class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <div class="mb-3 text-3xl">🔒</div>
+
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                    Secure Booking
+                </h3>
+
+                <p class="mt-2 text-sm leading-6 text-gray-600 dark:text-gray-400">
                     Rentals are allowed only after document approval.
                 </p>
             </div>
@@ -155,59 +128,106 @@
         </div>
     </section>
 
-    <!-- Featured Cars -->
-    <section id="featured-cars" class="bg-gray-100 py-20 scroll-mt-20">
-        <div class="max-w-7xl mx-auto px-6">
-            <h2 class="text-3xl font-bold text-center mb-12">
-                Featured Cars
-            </h2>
+    {{-- Featured Cars --}}
+    <section id="featured-cars" class="bg-gray-100 py-20 scroll-mt-24 dark:bg-gray-950">
+        <div class="mx-auto max-w-7xl px-6">
+            <div class="mb-12 flex flex-col items-start justify-between gap-4 md:flex-row md:items-end">
+                <div>
+                    <p class="text-sm font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
+                        Featured Fleet
+                    </p>
+
+                    <h2 class="mt-2 text-4xl font-bold text-gray-900 dark:text-white">
+                        Featured Cars
+                    </h2>
+
+                    <p class="mt-3 max-w-2xl text-gray-600 dark:text-gray-400">
+                        A quick look at some of the cars available in the rental fleet.
+                    </p>
+                </div>
+
+                <a href="{{ route('cars.index') }}"
+                    class="rounded-xl bg-black px-5 py-3 text-sm font-semibold text-white transition hover:bg-gray-800 dark:bg-white dark:text-gray-950 dark:hover:bg-gray-200">
+                    View all cars
+                </a>
+            </div>
 
             @if ($featuredCars->isEmpty())
-                <div class="bg-white rounded-xl shadow p-8 text-center">
-                    <p class="text-gray-600">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-10 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <p class="text-gray-600 dark:text-gray-400">
                         No cars available yet.
                     </p>
                 </div>
             @else
-                <div class="grid md:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
                     @foreach ($featuredCars as $car)
                         @php
                             $mainImage = $car->images->firstWhere('is_main', true) ?? $car->images->first();
                         @endphp
 
-                        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition">
+                        <div
+                            class="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md transition hover:shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:shadow-none dark:hover:border-gray-700">
                             @if ($mainImage)
                                 <img src="{{ asset('storage/' . $mainImage->image_path) }}" alt="{{ $car->name }}"
-                                    class="w-full h-48 object-cover">
+                                    class="h-56 w-full object-cover transition duration-300 group-hover:scale-105">
                             @else
-                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                                <div
+                                    class="flex h-56 w-full items-center justify-center bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
                                     No image
                                 </div>
                             @endif
 
                             <div class="p-6">
-                                <h3 class="text-xl font-semibold mb-2">
-                                    {{ $car->name }}
-                                </h3>
+                                <div class="flex items-start justify-between gap-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                                            {{ $car->name }}
+                                        </h3>
 
-                                <p class="text-gray-600 mb-4">
-                                    {{ $car->transmission->name ?? '-' }}
-                                    •
-                                    {{ $car->fuel->name ?? '-' }}
-                                    •
-                                    {{ $car->seat->seats ?? '-' }} Seats
-                                </p>
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            {{ $car->brand->name ?? '-' }} {{ $car->model->name ?? '' }}
+                                        </p>
+                                    </div>
 
-                                <div class="flex justify-between items-center gap-4">
-                                    <span class="text-lg font-bold">
-                                        €{{ number_format($car->price_per_day, 2) }}/day
-                                    </span>
+                                    <div class="text-right">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">
+                                            From
+                                        </p>
 
-                                    <a href="{{ route('cars.show', $car->id) }}"
-                                        class="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800 text-sm">
-                                        View Details
-                                    </a>
+                                        <p class="text-lg font-bold text-gray-900 dark:text-white">
+                                            €{{ number_format($car->price_per_day, 2) }}
+                                        </p>
+                                    </div>
                                 </div>
+
+                                <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+                                    <div class="rounded-xl bg-gray-100 p-3 dark:bg-gray-800">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Fuel</p>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                                            {{ $car->fuel->name ?? '-' }}
+                                        </p>
+                                    </div>
+
+                                    <div class="rounded-xl bg-gray-100 p-3 dark:bg-gray-800">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Seats</p>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                                            {{ $car->seat->seats ?? '-' }}
+                                        </p>
+                                    </div>
+
+                                    <div class="rounded-xl bg-gray-100 p-3 dark:bg-gray-800">
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">Gearbox</p>
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                                            {{ $car->transmission->name ?? '-' }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <a href="{{ route('cars.show', $car->id) }}"
+                                    class="mt-6 block w-full rounded-xl bg-black px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-gray-800 dark:bg-blue-600 dark:hover:bg-blue-700">
+                                    View Details
+                                </a>
                             </div>
                         </div>
                     @endforeach
@@ -216,59 +236,78 @@
         </div>
     </section>
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="bg-white py-20 scroll-mt-20">
-        <div class="max-w-7xl mx-auto px-6 text-center">
+    {{-- How It Works --}}
+    <section id="how-it-works" class="bg-white py-20 scroll-mt-24 dark:bg-gray-950">
+        <div class="mx-auto max-w-7xl px-6 text-center">
 
-            <h2 class="text-3xl font-bold mb-4">
+            <p class="text-sm font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
+                Simple process
+            </p>
+
+            <h2 class="mt-2 text-4xl font-bold text-gray-900 dark:text-white">
                 How It Works
             </h2>
 
-            <p class="text-gray-600 mb-12 max-w-2xl mx-auto">
+            <p class="mx-auto mt-4 mb-12 max-w-2xl text-gray-600 dark:text-gray-400">
                 Renting a car is simple, but every customer must have an approved document before making a reservation.
             </p>
 
-            <div class="grid md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-4">
 
-                <div class="p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <div class="text-5xl mb-4">📅</div>
-                    <h3 class="text-xl font-semibold mb-2">Choose Dates</h3>
-                    <p class="text-gray-600 text-sm">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="mb-4 text-5xl">📅</div>
+
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                        Choose Dates
+                    </h3>
+
+                    <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
                         Select your pickup and return dates to check available cars.
                     </p>
                 </div>
 
-                <div class="p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <div class="text-5xl mb-4">🚘</div>
-                    <h3 class="text-xl font-semibold mb-2">Select Car</h3>
-                    <p class="text-gray-600 text-sm">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="mb-4 text-5xl">🚘</div>
+
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                        Select Car
+                    </h3>
+
+                    <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
                         Browse the fleet and open the details page for your preferred car.
                     </p>
                 </div>
 
-                <div class="p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <div class="text-5xl mb-4">🪪</div>
-                    <h3 class="text-xl font-semibold mb-2">Upload Document</h3>
-                    <p class="text-gray-600 text-sm">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="mb-4 text-5xl">🪪</div>
+
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                        Upload Document
+                    </h3>
+
+                    <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
                         Add your ID card, driver license or passport for verification.
                     </p>
                 </div>
 
-                <div class="p-6 rounded-xl border border-gray-200 shadow-sm">
-                    <div class="text-5xl mb-4">🔑</div>
-                    <h3 class="text-xl font-semibold mb-2">Book & Drive</h3>
-                    <p class="text-gray-600 text-sm">
+                <div
+                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                    <div class="mb-4 text-5xl">🔑</div>
+
+                    <h3 class="mb-2 text-xl font-bold text-gray-900 dark:text-white">
+                        Book & Drive
+                    </h3>
+
+                    <p class="text-sm leading-6 text-gray-600 dark:text-gray-400">
                         After approval, you can complete your reservation and enjoy the ride.
                     </p>
                 </div>
 
             </div>
-
         </div>
     </section>
 
-    <!-- Footer -->
-    <x-public-footer />
-</body>
-
-</html>
+</x-public-layout>
