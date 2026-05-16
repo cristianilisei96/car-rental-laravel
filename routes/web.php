@@ -45,7 +45,7 @@ Route::get('/cars/{car}', [CustomerCarController::class, 'show'])->name('cars.sh
 Route::post('/cars/{car}/rent', [CarRentalController::class, 'store'])->name('customer.cars.rent');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('customer.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -312,19 +312,16 @@
                                             </form>
                                         @endif
 
-                                        @if ($document->status !== 'replaced')
-                                            <form
-                                                action="{{ route('admin.customer.documents.destroy', $document->id) }}"
-                                                method="POST">
-                                                @csrf
-                                                @method('DELETE')
+                                        <form action="{{ route('admin.customer.documents.destroy', $document->id) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
 
-                                                <button type="submit" onclick="return confirm('Delete document?')"
-                                                    class="rounded-lg bg-gray-600 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-700">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        @endif
+                                            <button type="submit" onclick="return confirm('Delete document?')"
+                                                class="rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold text-white hover:bg-red-700">
+                                                Delete
+                                            </button>
+                                        </form>
                                     </div>
                                 </td>
                             </tr>

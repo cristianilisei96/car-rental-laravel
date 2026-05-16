@@ -15,11 +15,30 @@
         $driverLicenseRejected = $driverLicense && $driverLicense->status === 'rejected';
         $identityDocumentRejected = $identityDocument && $identityDocument->status === 'rejected';
 
+        $rejectionMessage = null;
+
+        if ($driverLicenseRejected && $identityDocumentRejected) {
+            $rejectionMessage =
+                'Your Driver License and identity document were rejected. Please upload valid documents again.';
+        } elseif ($driverLicenseRejected) {
+            $rejectionMessage = 'Your Driver License was rejected. Please upload another valid Driver License.';
+        } elseif ($identityDocumentRejected) {
+            $rejectionMessage = 'Your identity document was rejected. Please upload another valid ID Card or Passport.';
+        }
+
         $driverLicensePending = $driverLicense && $driverLicense->status === 'pending';
         $identityDocumentPending = $identityDocument && $identityDocument->status === 'pending';
 
         $driverLicenseMissing = !$driverLicense;
         $identityDocumentMissing = !$identityDocument;
+
+        $driverLicenseCardClass = $driverLicenseRejected
+            ? 'border-red-200 bg-red-50 dark:border-red-900/60 dark:bg-red-950/30'
+            : 'border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900';
+
+        $identityDocumentCardClass = $identityDocumentRejected
+            ? 'border-red-200 bg-red-50 dark:border-red-900/60 dark:bg-red-950/30'
+            : 'border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900';
 
         $hasAnyDocument = $documents->isNotEmpty();
 
@@ -151,8 +170,28 @@
                 </div>
             @endif
 
+            @if ($rejectionMessage)
+                <div
+                    class="rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">
+                    <div class="flex items-start gap-3">
+                        <div class="text-xl">⚠️</div>
+
+                        <div>
+                            <p class="font-semibold">
+                                Document rejected
+                            </p>
+
+                            <p class="mt-1 text-sm">
+                                {{ $rejectionMessage }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             {{-- KYC status card --}}
-            <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+            <div
+                class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                         <p class="text-sm font-semibold uppercase tracking-wide text-blue-600 dark:text-blue-400">
@@ -176,8 +215,9 @@
 
             {{-- Requirements checklist --}}
             <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+
+                {{-- Driver License --}}
+                <div class="rounded-2xl border p-6 shadow-sm {{ $driverLicenseCardClass }}">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">
@@ -201,6 +241,12 @@
                             class="mt-4 inline-flex text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                             View document →
                         </a>
+
+                        @if ($driverLicenseRejected)
+                            <p class="mt-3 text-sm font-semibold text-red-700 dark:text-red-300">
+                                Please upload another valid Driver License.
+                            </p>
+                        @endif
                     @else
                         <p class="mt-4 text-sm text-red-600 dark:text-red-400">
                             You still need to upload your Driver License.
@@ -208,8 +254,8 @@
                     @endif
                 </div>
 
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                {{-- Identity Document --}}
+                <div class="rounded-2xl border p-6 shadow-sm {{ $identityDocumentCardClass }}">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">
@@ -234,6 +280,12 @@
                             class="mt-4 inline-flex text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
                             View document →
                         </a>
+
+                        @if ($identityDocumentRejected)
+                            <p class="mt-3 text-sm font-semibold text-red-700 dark:text-red-300">
+                                Please upload another valid ID Card or Passport.
+                            </p>
+                        @endif
                     @else
                         <p class="mt-4 text-sm text-red-600 dark:text-red-400">
                             You still need an approved ID Card or Passport.
