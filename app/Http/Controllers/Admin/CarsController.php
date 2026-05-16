@@ -125,8 +125,20 @@ class CarsController extends Controller
      */
     public function edit(string $id)
     {
-        $car = Car::with(['images', 'brand', 'model', 'color', 'fuel', 'seat', 'type', 'transmission', 'status'])
-            ->findOrFail($id);
+        $car = Car::with([
+            'images',
+            'brand',
+            'model',
+            'color',
+            'fuel',
+            'seat',
+            'type',
+            'transmission',
+            'status',
+            'discountRules' => function ($query) {
+                $query->orderBy('min_days');
+            },
+        ])->findOrFail($id);
 
         $brands = CarBrand::all();
         $models = CarModel::all();

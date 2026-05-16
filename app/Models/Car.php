@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\CarImage;
 use Illuminate\Database\Eloquent\Model;
 
 class Car extends Model
@@ -76,5 +75,10 @@ class Car extends Model
     {
         return $this->belongsToMany(\App\Models\User::class, 'favorites')
             ->withTimestamps();
+    }
+
+    public function discountRules()
+    {
+        return $this->hasMany(CarDiscountRule::class);
     }
 }

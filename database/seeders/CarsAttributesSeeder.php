@@ -98,13 +98,50 @@ class CarsAttributesSeeder extends Seeder
 
         // Models
         DB::table('car_models')->insert([
-            ['brand_id' => 43, 'name' => 'EX90', 'created_at' => now()],
-            ['brand_id' => 43, 'name' => 'EX60', 'created_at' => now()],
-            ['brand_id' => 43, 'name' => 'EX40', 'created_at' => now()],
-            ['brand_id' => 43, 'name' => 'EX30', 'created_at' => now()],
-            ['brand_id' => 43, 'name' => 'XC90', 'created_at' => now()],
-            ['brand_id' => 43, 'name' => 'XC60', 'created_at' => now()],
-            ['brand_id' => 43, 'name' => 'XC30', 'created_at' => now()]
+            ['id' => 1, 'brand_id' => 43, 'name' => 'EX90', 'created_at' => now()],
+            ['id' => 2, 'brand_id' => 43, 'name' => 'EX60', 'created_at' => now()],
+            ['id' => 3, 'brand_id' => 43, 'name' => 'EX40', 'created_at' => now()],
+            ['id' => 4, 'brand_id' => 43, 'name' => 'EX30', 'created_at' => now()],
+            ['id' => 5, 'brand_id' => 43, 'name' => 'XC90', 'created_at' => now()],
+            ['id' => 6, 'brand_id' => 43, 'name' => 'XC60', 'created_at' => now()],
+            ['id' => 7, 'brand_id' => 43, 'name' => 'XC30', 'created_at' => now()],
+
+            ['id' => 8, 'brand_id' => 9, 'name' => 'Logan', 'created_at' => now()],
+            ['id' => 9, 'brand_id' => 9, 'name' => 'Duster', 'created_at' => now()],
+            ['id' => 10, 'brand_id' => 9, 'name' => 'Sandero', 'created_at' => now()],
+            ['id' => 11, 'brand_id' => 9, 'name' => 'Jogger', 'created_at' => now()],
+
+            ['id' => 12, 'brand_id' => 42, 'name' => 'Golf', 'created_at' => now()],
+            ['id' => 13, 'brand_id' => 42, 'name' => 'Golf V', 'created_at' => now()],
+            ['id' => 14, 'brand_id' => 42, 'name' => 'Passat', 'created_at' => now()],
+            ['id' => 15, 'brand_id' => 42, 'name' => 'Tiguan', 'created_at' => now()],
+
+            ['id' => 16, 'brand_id' => 35, 'name' => 'Octavia', 'created_at' => now()],
+            ['id' => 17, 'brand_id' => 35, 'name' => 'Superb', 'created_at' => now()],
+            ['id' => 18, 'brand_id' => 35, 'name' => 'Kodiaq', 'created_at' => now()],
+
+            ['id' => 19, 'brand_id' => 4, 'name' => 'Series 3', 'created_at' => now()],
+            ['id' => 20, 'brand_id' => 4, 'name' => 'X5', 'created_at' => now()],
+
+            ['id' => 21, 'brand_id' => 3, 'name' => 'A4', 'created_at' => now()],
+            ['id' => 22, 'brand_id' => 3, 'name' => 'A6', 'created_at' => now()],
+            ['id' => 23, 'brand_id' => 3, 'name' => 'Q5', 'created_at' => now()],
+
+            ['id' => 24, 'brand_id' => 24, 'name' => 'C-Class', 'created_at' => now()],
+            ['id' => 25, 'brand_id' => 24, 'name' => 'GLC', 'created_at' => now()],
+
+            ['id' => 26, 'brand_id' => 41, 'name' => 'Corolla', 'created_at' => now()],
+            ['id' => 27, 'brand_id' => 41, 'name' => 'RAV4', 'created_at' => now()],
+
+            ['id' => 28, 'brand_id' => 31, 'name' => 'Clio', 'created_at' => now()],
+            ['id' => 29, 'brand_id' => 31, 'name' => 'Megane', 'created_at' => now()],
+
+            ['id' => 30, 'brand_id' => 11, 'name' => 'Focus', 'created_at' => now()],
+            ['id' => 31, 'brand_id' => 11, 'name' => 'Kuga', 'created_at' => now()],
+
+            ['id' => 32, 'brand_id' => 39, 'name' => 'Model 3', 'created_at' => now()],
+            ['id' => 33, 'brand_id' => 39, 'name' => 'Model X', 'created_at' => now()],
+            ['id' => 34, 'brand_id' => 39, 'name' => 'Model Y', 'created_at' => now()],
         ]);
 
         // Seats

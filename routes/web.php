@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CarBrandController;
 use App\Http\Controllers\Admin\CarColorController;
+use App\Http\Controllers\Admin\CarDiscountRuleController;
 use App\Http\Controllers\Admin\CarFuelController;
 use App\Http\Controllers\Admin\CarModelController;
 use App\Http\Controllers\Admin\CarsController;
@@ -112,6 +113,18 @@ Route::middleware(['auth', 'admin'])
 
         Route::post('cars/{car}/set-main-image/{image}', [CarsController::class, 'setMainImage'])->name('cars.setMainImage');
         Route::delete('cars/{car}/images/{image}', [CarsController::class, 'destroyImage'])->name('cars.images.destroy');
+
+        Route::post('/cars/{car}/discount-rules', [CarDiscountRuleController::class, 'store'])
+            ->name('cars.discount-rules.store');
+
+        Route::put('/cars/{car}/discount-rules/{discountRule}', [CarDiscountRuleController::class, 'update'])
+            ->name('cars.discount-rules.update');
+
+        Route::patch('/cars/{car}/discount-rules/{discountRule}/toggle', [CarDiscountRuleController::class, 'toggle'])
+            ->name('cars.discount-rules.toggle');
+
+        Route::delete('/cars/{car}/discount-rules/{discountRule}', [CarDiscountRuleController::class, 'destroy'])
+            ->name('cars.discount-rules.destroy');
     });
 
 require __DIR__ . '/auth.php';
