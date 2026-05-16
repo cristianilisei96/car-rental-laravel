@@ -166,6 +166,10 @@
                                 <x-dropdown-link :href="route('profile.edit')">
                                     {{ __('Profile') }}
                                 </x-dropdown-link>
+
+                                <x-dropdown-link :href="route('customer.account-details.edit')">
+                                    {{ __('Account Details') }}
+                                </x-dropdown-link>
                             @endif
 
                             <!-- Authentication -->
@@ -275,8 +279,28 @@
                         {{ __('Dashboard') }}
                     </x-responsive-nav-link>
 
+                    <x-responsive-nav-link :href="route('cars.index')" :active="request()->routeIs('cars.*')">
+                        {{ __('Cars') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('customer.favorites.index')" :active="request()->routeIs('customer.favorites.*')">
+                        {{ __('Favorites') }}
+                    </x-responsive-nav-link>
+
                     <x-responsive-nav-link :href="route('customer.document.create')" :active="request()->routeIs('customer.document.*')">
                         {{ __('My Documents') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('customer.rentals.index')" :active="request()->routeIs('customer.rentals.*')">
+                        {{ __('My Rentals') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
+                        {{ __('Profile') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('customer.account-details.edit')" :active="request()->routeIs('customer.account-details.*')">
+                        {{ __('Account Details') }}
                     </x-responsive-nav-link>
                 @endif
             </div>
@@ -296,6 +320,10 @@
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('profile.edit')">
                         {{ __('Profile') }}
+                    </x-responsive-nav-link>
+
+                    <x-responsive-nav-link :href="route('customer.account-details.edit')">
+                        {{ __('Account Details') }}
                     </x-responsive-nav-link>
 
                     <!-- Authentication -->

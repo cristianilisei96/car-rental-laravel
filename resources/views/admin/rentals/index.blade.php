@@ -35,22 +35,6 @@
             </div>
         @endif
 
-        <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-                <p class="text-sm font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">
-                    Admin
-                </p>
-
-                <h1 class="mt-2 text-3xl font-bold text-gray-900 dark:text-white">
-                    Rental Requests
-                </h1>
-
-                <p class="mt-2 text-gray-600 dark:text-gray-400">
-                    Approve requests, confirm payments and manage active rentals.
-                </p>
-            </div>
-        </div>
-
         @if ($rentals->isEmpty())
             <div
                 class="rounded-3xl border border-gray-200 bg-white p-10 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900">

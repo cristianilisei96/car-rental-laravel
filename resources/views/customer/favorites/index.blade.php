@@ -1,28 +1,17 @@
-<x-public-layout title="My Favorites | Car Rental Laravel">
+<x-customer.layout title="My Favorites | Car Rental Laravel">
+    <x-slot name="header">
+        <div>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                My Favorites
+            </h2>
 
-    <main class="bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen pt-20">
-        <section class="max-w-7xl mx-auto px-6 py-12">
-
-            <div class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between mb-10">
-                <div>
-                    <p class="text-sm uppercase tracking-widest text-blue-600 dark:text-blue-400 font-bold">
-                        Customer
-                    </p>
-
-                    <h1 class="mt-3 text-4xl font-bold text-gray-900 dark:text-white">
-                        My Favorite Cars
-                    </h1>
-
-                    <p class="text-gray-600 dark:text-gray-400 mt-2">
-                        Cars saved to your favorites list.
-                    </p>
-                </div>
-
-                <a href="{{ route('cars.index') }}"
-                    class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white hover:bg-blue-700">
-                    Browse cars
-                </a>
-            </div>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                View and manage the cars you saved for later.
+            </p>
+        </div>
+    </x-slot>
+    <div class="py-10 bg-gray-100 dark:bg-gray-950 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
             @if ($cars->isEmpty())
                 <div
@@ -157,6 +146,6 @@
                     {{ $cars->links() }}
                 </div>
             @endif
-        </section>
-    </main>
-</x-public-layout>
+        </div>
+    </div>
+</x-customer.layout>

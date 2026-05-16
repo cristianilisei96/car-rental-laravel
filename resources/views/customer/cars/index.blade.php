@@ -1,28 +1,17 @@
-<x-public-layout title="Available Cars | Car Rental Laravel">
+<x-customer.layout title="Available Cars | Car Rental Laravel">
+    <x-slot name="header">
+        <div>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                Available Cars
+            </h2>
 
-    <main class="bg-gray-100 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen pt-20">
-        <section class="max-w-7xl mx-auto px-6 py-12">
-
-            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
-                <div>
-                    <p class="text-sm uppercase tracking-widest text-blue-600 dark:text-blue-400 font-bold">
-                        Rental Fleet
-                    </p>
-
-                    <h1 class="mt-2 text-4xl font-bold text-gray-900 dark:text-white">
-                        Available Cars
-                    </h1>
-
-                    <p class="text-gray-600 dark:text-gray-400 mt-3 max-w-2xl">
-                        Browse our available cars, compare details and choose the right car for your trip.
-                    </p>
-                </div>
-
-                <a href="{{ route('home') }}"
-                    class="inline-flex items-center justify-center px-5 py-3 bg-black hover:bg-gray-800 dark:bg-white dark:hover:bg-gray-200 text-white dark:text-gray-950 text-sm font-semibold rounded-xl">
-                    ← Back home
-                </a>
-            </div>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                Browse our available cars, compare details and choose the right car for your trip.
+            </p>
+        </div>
+    </x-slot>
+    <div class="py-10 bg-gray-100 dark:bg-gray-950 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
 
             <form method="GET" action="{{ route('cars.index') }}"
                 class="mb-10 rounded-2xl border border-gray-200 bg-white p-4 shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -279,7 +268,7 @@
                 </div>
             @endif
 
-        </section>
-    </main>
+        </div>
+    </div>
 
-</x-public-layout>
+</x-customer.layout>

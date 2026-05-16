@@ -39,6 +39,12 @@ class CarRentalController extends Controller
                 ->with('warning', 'You need an approved Driver License and an approved ID Card or Passport before renting a car.');
         }
 
+        if (! $user->hasCompleteCustomerProfile()) {
+            return redirect()
+                ->route('customer.account-details.edit')
+                ->with('warning', 'Please complete your account details before renting a car.');
+        }
+
         if ((int) $car->status_id !== 1) {
             return redirect()
                 ->route('cars.show', $car)
@@ -84,6 +90,12 @@ class CarRentalController extends Controller
             return redirect()
                 ->route('customer.document.create')
                 ->with('warning', 'You need an approved Driver License and an approved ID Card or Passport before renting a car.');
+        }
+
+        if (! $user->hasCompleteCustomerProfile()) {
+            return redirect()
+                ->route('customer.account-details.edit')
+                ->with('warning', 'Please complete your account details before renting a car.');
         }
 
         if ((int) $car->status_id !== 1) {

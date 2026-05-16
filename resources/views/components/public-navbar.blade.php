@@ -48,15 +48,6 @@ window.addEventListener('scroll', () => scrolled = window.scrollY > 40);" class=
             </div>
 
             <div class="hidden lg:flex items-center gap-3">
-                <form method="GET" action="{{ route('cars.index') }}" class="hidden xl:flex items-center">
-                    <input type="text" name="search" value="{{ request('search') }}" placeholder="Search cars..."
-                        class="w-52 rounded-l-xl border-0 px-4 py-2.5 text-sm text-gray-900 dark:bg-gray-900 dark:text-gray-100 ring-1 ring-gray-300 dark:ring-gray-700 focus:ring-2 focus:ring-blue-600">
-
-                    <button type="submit"
-                        class="rounded-r-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-700">
-                        Search
-                    </button>
-                </form>
 
                 <button type="button" x-data="{
                     darkMode: document.documentElement.classList.contains('dark'),
@@ -142,7 +133,7 @@ window.addEventListener('scroll', () => scrolled = window.scrollY > 40);" class=
 
                                     <a href="{{ route('customer.document.create') }}"
                                         class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
-                                        My Document
+                                        My Documents
                                     </a>
 
                                     <a href="{{ route('customer.rentals.index') }}"
@@ -154,10 +145,13 @@ window.addEventListener('scroll', () => scrolled = window.scrollY > 40);" class=
                                         class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                                         Profile
                                     </a>
+
+                                    <a href="{{ route('customer.account-details.edit') }}"
+                                        class="block px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800">
+                                        Account Details
+                                    </a>
                                 @endif
                             </div>
-
-
 
                             <div class="border-t border-gray-100 dark:border-gray-800 py-2">
                                 <form method="POST" action="{{ route('logout') }}">
@@ -214,9 +208,14 @@ window.addEventListener('scroll', () => scrolled = window.scrollY > 40);" class=
                     @if (Auth::user()->is_admin)
                         <a href="{{ route('admin.dashboard') }}" class="block font-semibold">Admin Dashboard</a>
                     @else
-                        <a href="{{ route('customer.favorites.index') }}" class="block font-semibold">Favorites</a>
-                        <a href="{{ route('customer.document.create') }}" class="block font-semibold">My Document</a>
                         <a href="{{ route('dashboard') }}" class="block font-semibold">Dashboard</a>
+                        <a href="{{ route('cars.index') }}" class="block font-semibold">Cars</a>
+                        <a href="{{ route('customer.favorites.index') }}" class="block font-semibold">Favorites</a>
+                        <a href="{{ route('customer.document.create') }}" class="block font-semibold">My Documents</a>
+                        <a href="{{ route('customer.rentals.index') }}" class="block font-semibold">My Rentals</a>
+                        <a href="{{ route('profile.edit') }}" class="block font-semibold">Profile</a>
+                        <a href="{{ route('customer.account-details.edit') }}" class="block font-semibold">Account
+                            Details</a>
                     @endif
 
                     <form method="POST" action="{{ route('logout') }}">

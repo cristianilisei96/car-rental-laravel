@@ -109,4 +109,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Rental::class);
     }
+
+    public function customerProfile()
+    {
+        return $this->hasOne(CustomerProfile::class);
+    }
+
+    public function hasCompleteCustomerProfile(): bool
+    {
+        return $this->customerProfile?->isComplete() ?? false;
+    }
 }

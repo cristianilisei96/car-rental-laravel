@@ -30,6 +30,7 @@
         $hasApprovedDriverLicense = $user->hasApprovedDriverLicense();
         $hasApprovedIdentityDocument = $user->hasApprovedIdentityDocument();
         $isKycApproved = $user->isKycApproved();
+        $hasCompleteCustomerProfile = $user->hasCompleteCustomerProfile();
 
         $hasAnyDocument = $activeDocuments->isNotEmpty();
         $hasPendingDocument = $activeDocuments->where('status', 'pending')->isNotEmpty();
@@ -215,22 +216,23 @@
                     </div>
                 </div>
 
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <a href="{{ route('customer.account-details.edit') }}"
+                    class="block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-blue-500">
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
-                                Uploaded documents
+                                Account details
                             </p>
 
-                            <p class="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
-                                {{ $uploadedDocumentsCount }}
+                            <p
+                                class="mt-2 text-2xl font-bold {{ $hasCompleteCustomerProfile ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400' }}">
+                                {{ $hasCompleteCustomerProfile ? 'Complete' : 'Incomplete' }}
                             </p>
                         </div>
 
-                        <span class="text-3xl">📄</span>
+                        <span class="text-3xl">👤</span>
                     </div>
-                </div>
+                </a>
 
                 <div
                     class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">

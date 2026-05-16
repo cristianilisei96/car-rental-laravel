@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\CarTypeController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\RentalController;
+use App\Http\Controllers\Customer\AccountDetailsController;
 use App\Http\Controllers\Customer\CarController as CustomerCarController;
 use App\Http\Controllers\Customer\CarRentalController;
 use App\Http\Controllers\Customer\CustomerDocumentController;
@@ -104,6 +105,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+    Route::get('/account/details', [AccountDetailsController::class, 'edit'])
+        ->name('customer.account-details.edit');
+
+    Route::patch('/account/details', [AccountDetailsController::class, 'update'])
+        ->name('customer.account-details.update');
 });
 
 // Admin pages
