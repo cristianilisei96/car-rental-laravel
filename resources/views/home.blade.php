@@ -164,19 +164,33 @@
                     @foreach ($featuredCars as $car)
                         @php
                             $mainImage = $car->images->firstWhere('is_main', true) ?? $car->images->first();
+
+                            $maxDiscount = $car->discountRules->where('is_active', true)->max('discount_per_day');
                         @endphp
 
                         <div
                             class="group overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md transition hover:shadow-xl dark:border-gray-800 dark:bg-gray-900 dark:shadow-none dark:hover:border-gray-700">
-                            @if ($mainImage)
-                                <img src="{{ asset('storage/' . $mainImage->image_path) }}" alt="{{ $car->name }}"
-                                    class="h-56 w-full object-cover transition duration-300 group-hover:scale-105">
-                            @else
-                                <div
-                                    class="flex h-56 w-full items-center justify-center bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
-                                    No image
-                                </div>
-                            @endif
+                            <div class="relative overflow-hidden">
+                                @if ($mainImage)
+                                    <img src="{{ asset('storage/' . $mainImage->image_path) }}"
+                                        alt="{{ $car->name }}"
+                                        class="h-56 w-full object-cover transition duration-300 group-hover:scale-105">
+                                @else
+                                    <div
+                                        class="flex h-56 w-full items-center justify-center bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                                        No image
+                                    </div>
+                                @endif
+
+                                @if ($maxDiscount)
+                                    <div class="absolute bottom-4 left-4">
+                                        <span
+                                            class="rounded-full bg-blue-600 px-3 py-1 text-xs font-bold text-white shadow-lg">
+                                            Save up to €{{ number_format($maxDiscount, 2) }}/day
+                                        </span>
+                                    </div>
+                                @endif
+                            </div>
 
                             <div class="p-6">
                                 <div class="flex items-start justify-between gap-4">
