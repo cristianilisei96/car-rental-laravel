@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-customer.layout title="Customer Dashboard | Car Rental Laravel">
     <x-slot name="header">
         <div class="flex flex-col gap-1">
             <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
@@ -447,4 +447,4 @@
 
     </div>
     </div>
-</x-app-layout>
+</x-customer.layout>

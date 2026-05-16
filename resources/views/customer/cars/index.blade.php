@@ -5,7 +5,7 @@
 
             <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
                 <div>
-                    <p class="text-sm font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide">
+                    <p class="text-sm uppercase tracking-widest text-blue-600 dark:text-blue-400 font-bold">
                         Rental Fleet
                     </p>
 

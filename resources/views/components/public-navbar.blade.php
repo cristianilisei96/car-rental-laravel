@@ -149,8 +149,15 @@ window.addEventListener('scroll', () => scrolled = window.scrollY > 40);" class=
                                         class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                                         My Rentals
                                     </a>
+
+                                    <a href="{{ route('profile.edit') }}"
+                                        class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
+                                        Profile
+                                    </a>
                                 @endif
                             </div>
+
+
 
                             <div class="border-t border-gray-100 dark:border-gray-800 py-2">
                                 <form method="POST" action="{{ route('logout') }}">
@@ -158,7 +165,7 @@ window.addEventListener('scroll', () => scrolled = window.scrollY > 40);" class=
 
                                     <button type="submit"
                                         class="block w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30">
-                                        Logout
+                                        Log Out
                                     </button>
                                 </form>
                             </div>
