@@ -145,7 +145,7 @@ window.addEventListener('scroll', () => scrolled = window.scrollY > 40);" class=
                                         My Document
                                     </a>
 
-                                    <a href="#"
+                                    <a href="{{ route('customer.rentals.index') }}"
                                         class="block px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800">
                                         My Rentals
                                     </a>

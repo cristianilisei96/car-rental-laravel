@@ -38,9 +38,16 @@
         $uploadedDocumentsCount = $activeDocuments->count();
         $favoriteCarsCount = $user->favoriteCars()->count();
 
-        $totalRentals = 0;
-        $pendingRentals = 0;
-        $totalSpent = 0;
+        $totalRentals = $user->rentals()->count();
+
+        $pendingRentals = $user
+            ->rentals()
+            ->whereHas('status', function ($query) {
+                $query->where('slug', 'pending');
+            })
+            ->count();
+
+        $totalSpent = $user->rentals()->where('payment_status', 'paid')->sum('total_price');
 
         $driverLicenseRejected = $driverLicense && $driverLicense->status === 'rejected';
         $identityDocumentRejected = $identityDocument && $identityDocument->status === 'rejected';
@@ -374,33 +381,33 @@
 
             <div class="mt-6 space-y-3">
                 <a href="{{ route('cars.index') }}"
-                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 dark:border-gray-800 dark:text-gray-100 dark:hover:bg-gray-800">
+                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 font-semibold text-gray-700 transition hover:border-blue-500 hover:text-blue-600 dark:border-gray-800 dark:text-gray-200 dark:hover:border-blue-500 dark:hover:text-blue-400">
                     <span>Browse cars</span>
                     <span>→</span>
                 </a>
 
                 <a href="{{ route('customer.favorites.index') }}"
-                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 dark:border-gray-800 dark:text-gray-100 dark:hover:bg-gray-800">
+                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 font-semibold text-gray-700 transition hover:border-blue-500 hover:text-blue-600 dark:border-gray-800 dark:text-gray-200 dark:hover:border-blue-500 dark:hover:text-blue-400">
                     <span>View favorites</span>
                     <span>→</span>
                 </a>
 
                 <a href="{{ route('customer.document.create') }}"
-                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 dark:border-gray-800 dark:text-gray-100 dark:hover:bg-gray-800">
+                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 font-semibold text-gray-700 transition hover:border-blue-500 hover:text-blue-600 dark:border-gray-800 dark:text-gray-200 dark:hover:border-blue-500 dark:hover:text-blue-400">
                     <span>Upload documents</span>
                     <span>→</span>
                 </a>
 
-                <a href="#"
-                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-400 cursor-not-allowed dark:border-gray-800 dark:text-gray-500">
-                    <span>My reservations</span>
-                    <span>Soon</span>
+                <a href="{{ route('customer.rentals.index') }}"
+                    class="flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 font-semibold text-gray-700 transition hover:border-blue-500 hover:text-blue-600 dark:border-gray-800 dark:text-gray-200 dark:hover:border-blue-500 dark:hover:text-blue-400">
+                    <span>My rentals</span>
+                    <span>→</span>
                 </a>
             </div>
         </div>
     </div>
 
-    {{-- Rental overview placeholder --}}
+    {{-- Rental overview --}}
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
         <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
             <p class="text-sm text-gray-500 dark:text-gray-400">

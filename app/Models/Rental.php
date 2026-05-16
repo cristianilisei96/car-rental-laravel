@@ -6,5 +6,44 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rental extends Model
 {
-    //
+    protected $fillable = [
+        'user_id',
+        'car_id',
+        'status_id',
+        'pickup_date',
+        'return_date',
+        'total_days',
+        'price_per_day',
+        'discount_per_day',
+        'subtotal_price',
+        'total_discount',
+        'total_price',
+        'payment_method',
+        'payment_status',
+    ];
+
+    protected $casts = [
+        'pickup_date' => 'date',
+        'return_date' => 'date',
+        'price_per_day' => 'decimal:2',
+        'discount_per_day' => 'decimal:2',
+        'subtotal_price' => 'decimal:2',
+        'total_discount' => 'decimal:2',
+        'total_price' => 'decimal:2',
+    ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function car()
+    {
+        return $this->belongsTo(Car::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(RentalStatus::class, 'status_id');
+    }
 }

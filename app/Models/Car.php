@@ -81,4 +81,9 @@ class Car extends Model
     {
         return $this->hasMany(CarDiscountRule::class);
     }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
 }

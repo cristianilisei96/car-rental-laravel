@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             CarsAttributesSeeder::class,
             DemoCarsSeeder::class,
             CarDiscountRuleSeeder::class,
+            RentalStatusSeeder::class,
         ]);
     }
 }

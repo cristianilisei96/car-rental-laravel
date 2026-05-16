@@ -104,4 +104,9 @@ class User extends Authenticatable
             ->where('cars.id', $carId)
             ->exists();
     }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
+    }
 }

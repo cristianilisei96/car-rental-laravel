@@ -92,7 +92,7 @@
                                 </div>
                             </div>
 
-                            <x-nav-link href="#">
+                            <x-nav-link href="{{ route('admin.rentals.index') }}">
                                 {{ __('Rentals') }}
                             </x-nav-link>
                         @else
@@ -267,7 +267,7 @@
                         {{ __('Car Types') }}
                     </x-responsive-nav-link>
 
-                    <x-responsive-nav-link href="#">
+                    <x-responsive-nav-link :href="route('admin.rentals.index')" :active="request()->routeIs('admin.rentals.*')">
                         {{ __('Rentals') }}
                     </x-responsive-nav-link>
                 @else

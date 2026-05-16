@@ -99,8 +99,8 @@
                                 My Documents
                             </a>
 
-                            <a href="#"
-                                class="block px-5 py-3 text-sm font-medium text-gray-500 cursor-not-allowed">
+                            <a href="{{ route('customer.rentals.index') }}"
+                                class="block px-5 py-3 text-sm font-medium text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800">
                                 My Rentals
                             </a>
 

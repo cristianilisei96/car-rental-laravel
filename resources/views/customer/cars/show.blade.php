@@ -184,7 +184,7 @@
                     <div class="mt-8 border-t border-gray-200 dark:border-gray-800 pt-6">
                         @auth
                             @if (!Auth::user()->is_admin)
-                                <a href="#"
+                                <a href="{{ route('customer.rentals.create', $car) }}"
                                     class="block w-full text-center bg-black hover:bg-gray-800 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold">
                                     Continue to reservation
                                 </a>
