@@ -12,25 +12,26 @@ class CustomerDocumentController extends Controller
 
     public function create()
     {
-        // $document = Auth::user()->document;
-        $document = Auth::user()
-            ->documents()
-            ->orderByDesc('id')
-            ->first();
+        $user = Auth::user();
 
-        return view('customer.documents.upload', compact('document'));
+        $documents = $user->documents()
+            ->where('status', '!=', 'replaced')
+            ->latest()
+            ->get()
+            ->unique('document_type')
+            ->keyBy('document_type');
+
+        $hasApprovedDriverLicense = $user->hasApprovedDriverLicense();
+        $hasApprovedIdentityDocument = $user->hasApprovedIdentityDocument();
+        $isKycApproved = $user->isKycApproved();
+
+        return view('customer.documents.upload', compact(
+            'documents',
+            'hasApprovedDriverLicense',
+            'hasApprovedIdentityDocument',
+            'isKycApproved'
+        ));
     }
-    // public function create()
-    // {
-    //     $documents = Auth::user()
-    //         ->documents()
-    //         ->where('status', '!=', 'replaced')
-    //         ->latest()
-    //         ->get()
-    //         ->unique('document_type');
-
-    //     return view('customer.documents.upload', compact('documents'));
-    // }
 
     public function store(Request $request)
     {

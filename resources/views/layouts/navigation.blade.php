@@ -160,7 +160,7 @@
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('customer.document.create')">
-                                    {{ __('My Document') }}
+                                    {{ __('My Documents') }}
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('profile.edit')">
@@ -276,7 +276,7 @@
                     </x-responsive-nav-link>
 
                     <x-responsive-nav-link :href="route('customer.document.create')" :active="request()->routeIs('customer.document.*')">
-                        {{ __('My Document') }}
+                        {{ __('My Documents') }}
                     </x-responsive-nav-link>
                 @endif
             </div>

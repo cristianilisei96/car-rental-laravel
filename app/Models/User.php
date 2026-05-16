@@ -36,6 +36,44 @@ class User extends Authenticatable
         return $this->hasMany(CustomerDocument::class);
     }
 
+    public function approvedDriverLicense()
+    {
+        return $this->hasOne(CustomerDocument::class)
+            ->where('document_type', 'driver_license')
+            ->where('status', 'approved')
+            ->latestOfMany();
+    }
+
+    public function approvedIdentityDocument()
+    {
+        return $this->hasOne(CustomerDocument::class)
+            ->whereIn('document_type', ['id_card', 'passport'])
+            ->where('status', 'approved')
+            ->latestOfMany();
+    }
+
+    public function hasApprovedDriverLicense(): bool
+    {
+        return $this->documents()
+            ->where('document_type', 'driver_license')
+            ->where('status', 'approved')
+            ->exists();
+    }
+
+    public function hasApprovedIdentityDocument(): bool
+    {
+        return $this->documents()
+            ->whereIn('document_type', ['id_card', 'passport'])
+            ->where('status', 'approved')
+            ->exists();
+    }
+
+    public function isKycApproved(): bool
+    {
+        return $this->hasApprovedDriverLicense()
+            && $this->hasApprovedIdentityDocument();
+    }
+
     public function document()
     {
         return $this->hasOne(CustomerDocument::class)

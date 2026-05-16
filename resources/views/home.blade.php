@@ -66,6 +66,64 @@
                     </button>
                 </div>
             </form>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const pickup = document.getElementById('pickup');
+                    const returnDate = document.getElementById('return');
+
+                    if (!pickup || !returnDate) {
+                        return;
+                    }
+
+                    function formatDate(date) {
+                        return date.toISOString().split('T')[0];
+                    }
+
+                    function addDays(date, days) {
+                        const result = new Date(date);
+                        result.setDate(result.getDate() + days);
+                        return result;
+                    }
+
+                    const today = new Date();
+
+                    const minPickupDate = addDays(today, 1);
+                    const minReturnDate = addDays(today, 2);
+
+                    pickup.min = formatDate(minPickupDate);
+                    returnDate.min = formatDate(minReturnDate);
+
+                    if (!pickup.value) {
+                        pickup.value = formatDate(minPickupDate);
+                    }
+
+                    if (!returnDate.value) {
+                        returnDate.value = formatDate(minReturnDate);
+                    }
+
+                    pickup.addEventListener('change', function() {
+                        if (!pickup.value) {
+                            returnDate.min = formatDate(minReturnDate);
+
+                            if (!returnDate.value || returnDate.value < returnDate.min) {
+                                returnDate.value = formatDate(minReturnDate);
+                            }
+
+                            return;
+                        }
+
+                        const selectedPickup = new Date(pickup.value);
+                        const newMinReturn = addDays(selectedPickup, 1);
+                        const newMinReturnString = formatDate(newMinReturn);
+
+                        returnDate.min = newMinReturnString;
+
+                        if (!returnDate.value || returnDate.value < newMinReturnString) {
+                            returnDate.value = newMinReturnString;
+                        }
+                    });
+                });
+            </script>
         </div>
     </section>
 
