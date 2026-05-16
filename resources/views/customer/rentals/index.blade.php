@@ -213,6 +213,27 @@
                                             </p>
                                         </div>
                                     </div>
+                                    @if (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status !== 'paid')
+                                        <div class="mt-6 border-t border-gray-200 pt-6 dark:border-gray-800">
+                                            <form method="POST"
+                                                action="{{ route('customer.rentals.cancel', $rental) }}">
+                                                @csrf
+                                                @method('PATCH')
+
+                                                <button type="submit"
+                                                    onclick="return confirm('Are you sure you want to cancel this rental request?')"
+                                                    class="inline-flex rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">
+                                                    Cancel rental
+                                                </button>
+                                            </form>
+                                        </div>
+                                    @elseif (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status === 'paid')
+                                        <div class="mt-6 border-t border-gray-200 pt-6 dark:border-gray-800">
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                                This rental is already paid. Please contact support to cancel it.
+                                            </p>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                         </article>

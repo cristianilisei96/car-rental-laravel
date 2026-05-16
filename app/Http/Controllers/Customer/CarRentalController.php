@@ -131,7 +131,30 @@ class CarRentalController extends Controller
         ]);
 
         return redirect()
-            ->route('dashboard')
+            ->route('customer.rentals.index')
             ->with('success', 'Your rental request has been created and is waiting for admin approval.');
+    }
+
+    public function cancel(Rental $rental)
+    {
+        if ($rental->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if (! in_array($rental->status?->slug, ['pending', 'approved'])) {
+            return back()->with('warning', 'This rental can no longer be cancelled.');
+        }
+
+        if ($rental->payment_status === 'paid') {
+            return back()->with('warning', 'This rental is already paid. Please contact support to cancel it.');
+        }
+
+        $cancelledStatus = RentalStatus::where('slug', 'cancelled')->firstOrFail();
+
+        $rental->update([
+            'status_id' => $cancelledStatus->id,
+        ]);
+
+        return back()->with('success', 'Your rental request was cancelled successfully.');
     }
 }

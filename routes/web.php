@@ -93,6 +93,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/my-rentals', [CarRentalController::class, 'index'])
         ->name('customer.rentals.index');
 
+    Route::patch('/my-rentals/{rental}/cancel', [CarRentalController::class, 'cancel'])
+        ->name('customer.rentals.cancel');
+
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 

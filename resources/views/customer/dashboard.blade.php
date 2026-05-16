@@ -409,7 +409,8 @@
 
     {{-- Rental overview --}}
     <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <a href="{{ route('customer.rentals.index') }}"
+            class="block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-blue-500">
             <p class="text-sm text-gray-500 dark:text-gray-400">
                 Total rentals
             </p>
@@ -419,11 +420,12 @@
             </p>
 
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                Rental history will appear here after you make reservations.
+                View your rental history and reservation details.
             </p>
-        </div>
+        </a>
 
-        <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <a href="{{ route('customer.rentals.index') }}"
+            class="block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-yellow-500 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-yellow-500">
             <p class="text-sm text-gray-500 dark:text-gray-400">
                 Pending rentals
             </p>
@@ -433,9 +435,9 @@
             </p>
 
             <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                Reservation requests waiting for admin approval.
+                View requests waiting for admin approval.
             </p>
-        </div>
+        </a>
 
         <div class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
             <p class="text-sm text-gray-500 dark:text-gray-400">
