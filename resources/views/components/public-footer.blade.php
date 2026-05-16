@@ -43,7 +43,7 @@
         <div>
             <h4 class="font-semibold mb-3">Contact</h4>
             <p class="text-gray-400 text-sm">Email: contact@carrental.test</p>
-            <p class="text-gray-400 text-sm mt-2">Phone: +40 700 000 000</p>
+            <p class="text-gray-400 text-sm mt-2">Phone: +40 754 420 138</p>
             <p class="text-gray-400 text-sm mt-2">Piatra Neamț, Romania</p>
         </div>
 
