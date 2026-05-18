@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Rental extends Model
 {
@@ -47,5 +48,10 @@ class Rental extends Model
     public function status()
     {
         return $this->belongsTo(RentalStatus::class, 'status_id');
+    }
+
+    public function events(): HasMany
+    {
+        return $this->hasMany(RentalEvent::class)->latest();
     }
 }

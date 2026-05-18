@@ -7,6 +7,8 @@ use App\Models\Rental;
 use App\Models\RentalStatus;
 use Illuminate\Http\RedirectResponse;
 use App\Services\CarAvailabilityService;
+use App\Models\RentalEvent;
+use Illuminate\Support\Facades\Auth;
 
 class RentalController extends Controller
 {
@@ -37,6 +39,9 @@ class RentalController extends Controller
             'car.images',
             'status',
             'user.customerProfile',
+            'events.user',
+            'events.oldStatus',
+            'events.newStatus',
         ]);
 
         return view('admin.rentals.show', compact('rental'));
@@ -59,9 +64,19 @@ class RentalController extends Controller
 
         $approvedStatus = RentalStatus::where('slug', 'approved')->firstOrFail();
 
+        $oldStatusId = $rental->status_id;
+
         $rental->update([
             'status_id' => $approvedStatus->id,
         ]);
+
+        $this->createRentalEvent(
+            $rental,
+            'admin_approved',
+            'Rental request approved by admin.',
+            $oldStatusId,
+            $approvedStatus->id
+        );
 
         return back()->with('success', 'Rental request approved successfully.');
     }
@@ -74,9 +89,19 @@ class RentalController extends Controller
 
         $rejectedStatus = RentalStatus::where('slug', 'rejected')->firstOrFail();
 
+        $oldStatusId = $rental->status_id;
+
         $rental->update([
             'status_id' => $rejectedStatus->id,
         ]);
+
+        $this->createRentalEvent(
+            $rental,
+            'admin_rejected',
+            'Rental request rejected by admin.',
+            $oldStatusId,
+            $rejectedStatus->id
+        );
 
         return back()->with('success', 'Rental request rejected successfully.');
     }
@@ -95,6 +120,12 @@ class RentalController extends Controller
             'payment_status' => 'paid',
         ]);
 
+        $this->createRentalEvent(
+            $rental,
+            'payment_marked_paid',
+            'Payment marked as paid by admin.'
+        );
+
         return back()->with('success', 'Payment marked as paid successfully.');
     }
 
@@ -110,9 +141,19 @@ class RentalController extends Controller
 
         $activeStatus = RentalStatus::where('slug', 'active')->firstOrFail();
 
+        $oldStatusId = $rental->status_id;
+
         $rental->update([
             'status_id' => $activeStatus->id,
         ]);
+
+        $this->createRentalEvent(
+            $rental,
+            'rental_started',
+            'Rental started by admin.',
+            $oldStatusId,
+            $activeStatus->id
+        );
 
         // car_statuses: 2 = Rented
         $rental->car?->update([
@@ -130,9 +171,19 @@ class RentalController extends Controller
 
         $completedStatus = RentalStatus::where('slug', 'completed')->firstOrFail();
 
+        $oldStatusId = $rental->status_id;
+
         $rental->update([
             'status_id' => $completedStatus->id,
         ]);
+
+        $this->createRentalEvent(
+            $rental,
+            'rental_completed',
+            'Rental completed by admin.',
+            $oldStatusId,
+            $completedStatus->id
+        );
 
         // car_statuses: 1 = Available
         $rental->car?->update([
@@ -150,10 +201,37 @@ class RentalController extends Controller
 
         $cancelledStatus = RentalStatus::where('slug', 'cancelled')->firstOrFail();
 
+        $oldStatusId = $rental->status_id;
+
         $rental->update([
             'status_id' => $cancelledStatus->id,
         ]);
 
+        $this->createRentalEvent(
+            $rental,
+            'admin_cancelled',
+            'Rental cancelled by admin.',
+            $oldStatusId,
+            $cancelledStatus->id
+        );
+
         return back()->with('success', 'Rental cancelled successfully.');
+    }
+
+    private function createRentalEvent(
+        Rental $rental,
+        string $type,
+        string $message,
+        ?int $oldStatusId = null,
+        ?int $newStatusId = null
+    ): void {
+        RentalEvent::create([
+            'rental_id' => $rental->id,
+            'user_id' => Auth::id(),
+            'type' => $type,
+            'message' => $message,
+            'old_status_id' => $oldStatusId,
+            'new_status_id' => $newStatusId,
+        ]);
     }
 }

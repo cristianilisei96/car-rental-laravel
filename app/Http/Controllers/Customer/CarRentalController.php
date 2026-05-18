@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use InvalidArgumentException;
+use App\Models\RentalEvent;
 
 class CarRentalController extends Controller
 {
@@ -46,6 +47,9 @@ class CarRentalController extends Controller
             'car.images',
             'status',
             'user.customerProfile',
+            'events.user',
+            'events.oldStatus',
+            'events.newStatus',
         ]);
 
         return view('customer.rentals.show', compact('rental'));
@@ -229,7 +233,7 @@ class CarRentalController extends Controller
 
         $pendingStatus = RentalStatus::where('slug', 'pending')->firstOrFail();
 
-        Rental::create([
+        $rental = Rental::create([
             'user_id' => $user->id,
             'car_id' => $car->id,
             'status_id' => $pendingStatus->id,
@@ -248,6 +252,14 @@ class CarRentalController extends Controller
             'total_price' => $priceDetails['total_price'],
             'payment_method' => $validated['payment_method'],
             'payment_status' => $validated['payment_method'] === 'card' ? 'pending' : 'unpaid',
+        ]);
+
+        RentalEvent::create([
+            'rental_id' => $rental->id,
+            'user_id' => $user->id,
+            'type' => 'rental_created',
+            'message' => 'Rental request created by customer.',
+            'new_status_id' => $pendingStatus->id,
         ]);
 
         return redirect()
@@ -271,8 +283,19 @@ class CarRentalController extends Controller
 
         $cancelledStatus = RentalStatus::where('slug', 'cancelled')->firstOrFail();
 
+        $oldStatusId = $rental->status_id;
+
         $rental->update([
             'status_id' => $cancelledStatus->id,
+        ]);
+
+        RentalEvent::create([
+            'rental_id' => $rental->id,
+            'user_id' => Auth::id(),
+            'type' => 'customer_cancelled',
+            'message' => 'Rental cancelled by customer.',
+            'old_status_id' => $oldStatusId,
+            'new_status_id' => $cancelledStatus->id,
         ]);
 
         return back()->with('success', 'Your rental request was cancelled successfully.');

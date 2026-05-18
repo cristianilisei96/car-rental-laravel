@@ -257,36 +257,67 @@
                 <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
                     <div>
                         <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-                            Rental communication
+                            Rental timeline
                         </h3>
 
                         <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                            Ask questions about this rental and view updates from the admin.
+                            View important updates about this rental.
                         </p>
                     </div>
 
                     <span
                         class="rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
-                        Coming soon
+                        {{ $rental->events->count() }} events
                     </span>
                 </div>
 
                 <div class="mt-6 space-y-4">
-                    <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">
-                        <p class="text-sm font-semibold text-gray-900 dark:text-white">
-                            System
-                        </p>
+                    @forelse ($rental->events as $event)
+                        <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">
+                            <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">
+                                        {{ str($event->type)->replace('_', ' ')->title() }}
+                                    </p>
 
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                            Your rental request was created on {{ $rental->created_at->format('d.m.Y H:i') }}.
-                        </p>
-                    </div>
+                                    @if ($event->message)
+                                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                            {{ $event->message }}
+                                        </p>
+                                    @endif
 
-                    <div class="rounded-2xl border border-dashed border-gray-300 p-4 dark:border-gray-700">
-                        <p class="text-sm text-gray-500 dark:text-gray-400">
-                            Soon you will be able to send questions to the admin and see status updates here.
-                        </p>
-                    </div>
+                                    @if ($event->oldStatus || $event->newStatus)
+                                        <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                            Status:
+                                            <span class="font-semibold">
+                                                {{ $event->oldStatus?->name ?? '-' }}
+                                            </span>
+                                            →
+                                            <span class="font-semibold">
+                                                {{ $event->newStatus?->name ?? '-' }}
+                                            </span>
+                                        </p>
+                                    @endif
+                                </div>
+
+                                <div class="text-left sm:text-right">
+                                    <p class="text-xs font-semibold text-gray-500 dark:text-gray-400">
+                                        {{ $event->created_at->format('d.m.Y H:i') }}
+                                    </p>
+
+                                    <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                                        {{ $event->user?->is_admin ? 'Admin' : 'Customer' }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="rounded-2xl border border-dashed border-gray-300 p-4 dark:border-gray-700">
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                No rental events yet.
+                            </p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>
