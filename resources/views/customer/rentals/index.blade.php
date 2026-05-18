@@ -21,6 +21,13 @@
                 </div>
             @endif
 
+            @if (session('warning'))
+                <div
+                    class="mb-6 rounded-2xl border border-yellow-200 bg-yellow-50 p-4 text-yellow-800 dark:border-yellow-900/60 dark:bg-yellow-950/40 dark:text-yellow-300">
+                    {{ session('warning') }}
+                </div>
+            @endif
+
             @if ($rentals->isEmpty())
                 <div
                     class="rounded-3xl border border-gray-200 bg-white p-10 text-center shadow-sm dark:border-gray-800 dark:bg-gray-900">
@@ -117,6 +124,11 @@
                                                     class="rounded-full px-3 py-1 text-xs font-bold {{ $paymentStatusClasses }}">
                                                     Payment: {{ ucfirst($rental->payment_status) }}
                                                 </span>
+
+                                                <span
+                                                    class="rounded-full bg-gray-100 px-3 py-1 text-xs font-bold text-gray-700 dark:bg-gray-800 dark:text-gray-300">
+                                                    {{ ucfirst($rental->payment_method) }}
+                                                </span>
                                             </div>
 
                                             <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
@@ -151,7 +163,7 @@
 
                                                 @if ($rental->pickup_time)
                                                     <span class="ml-1 text-gray-500 dark:text-gray-400">
-                                                        {{ \Carbon\Carbon::parse($rental->pickup_time)->format('H:i') }}
+                                                        {{ substr($rental->pickup_time, 0, 5) }}
                                                     </span>
                                                 @endif
                                             </p>
@@ -167,7 +179,7 @@
 
                                                 @if ($rental->return_time)
                                                     <span class="ml-1 text-gray-500 dark:text-gray-400">
-                                                        {{ \Carbon\Carbon::parse($rental->return_time)->format('H:i') }}
+                                                        {{ substr($rental->return_time, 0, 5) }}
                                                     </span>
                                                 @endif
                                             </p>
@@ -225,8 +237,15 @@
                                             </p>
                                         </div>
                                     </div>
-                                    @if (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status !== 'paid')
-                                        <div class="mt-6 border-t border-gray-200 pt-6 dark:border-gray-800">
+
+                                    <div
+                                        class="mt-6 flex flex-wrap gap-3 border-t border-gray-200 pt-6 dark:border-gray-800">
+                                        <a href="{{ route('customer.rentals.show', $rental) }}"
+                                            class="inline-flex rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+                                            View details
+                                        </a>
+
+                                        @if (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status !== 'paid')
                                             <form method="POST"
                                                 action="{{ route('customer.rentals.cancel', $rental) }}">
                                                 @csrf
@@ -238,14 +257,12 @@
                                                     Cancel rental
                                                 </button>
                                             </form>
-                                        </div>
-                                    @elseif (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status === 'paid')
-                                        <div class="mt-6 border-t border-gray-200 pt-6 dark:border-gray-800">
+                                        @elseif (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status === 'paid')
                                             <p class="text-sm text-gray-500 dark:text-gray-400">
                                                 This rental is already paid. Please contact support to cancel it.
                                             </p>
-                                        </div>
-                                    @endif
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </article>

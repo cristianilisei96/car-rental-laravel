@@ -25,6 +25,23 @@ class RentalController extends Controller
         return view('admin.rentals.index', compact('rentals'));
     }
 
+    public function show(Rental $rental)
+    {
+        $rental->load([
+            'car.brand',
+            'car.model',
+            'car.type',
+            'car.fuel',
+            'car.seat',
+            'car.transmission',
+            'car.images',
+            'status',
+            'user.customerProfile',
+        ]);
+
+        return view('admin.rentals.show', compact('rental'));
+    }
+
     public function approve(Rental $rental, CarAvailabilityService $availabilityService): RedirectResponse
     {
         if ($rental->status?->slug !== 'pending') {

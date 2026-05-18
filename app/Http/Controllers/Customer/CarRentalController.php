@@ -30,6 +30,27 @@ class CarRentalController extends Controller
         return view('customer.rentals.index', compact('rentals'));
     }
 
+    public function show(Rental $rental)
+    {
+        if ($rental->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $rental->load([
+            'car.brand',
+            'car.model',
+            'car.type',
+            'car.fuel',
+            'car.seat',
+            'car.transmission',
+            'car.images',
+            'status',
+            'user.customerProfile',
+        ]);
+
+        return view('customer.rentals.show', compact('rental'));
+    }
+
     public function create(
         Request $request,
         Car $car,

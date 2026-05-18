@@ -94,6 +94,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/my-rentals', [CarRentalController::class, 'index'])
         ->name('customer.rentals.index');
 
+    Route::get('/my-rentals/{rental}', [CarRentalController::class, 'show'])
+        ->name('customer.rentals.show');
+
     Route::patch('/my-rentals/{rental}/cancel', [CarRentalController::class, 'cancel'])
         ->name('customer.rentals.cancel');
 
@@ -176,6 +179,9 @@ Route::middleware(['auth', 'admin'])
 
         Route::get('rentals', [RentalController::class, 'index'])
             ->name('rentals.index');
+
+        Route::get('rentals/{rental}', [RentalController::class, 'show'])
+            ->name('rentals.show');
 
         Route::patch('rentals/{rental}/approve', [RentalController::class, 'approve'])
             ->name('rentals.approve');

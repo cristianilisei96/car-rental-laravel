@@ -229,6 +229,11 @@
                                 {{-- Actions --}}
                                 <div
                                     class="mt-6 flex flex-wrap gap-3 border-t border-gray-200 pt-6 dark:border-gray-800">
+                                    <a href="{{ route('admin.rentals.show', $rental) }}"
+                                        class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+                                        View details
+                                    </a>
+
                                     @if ($statusSlug === 'pending')
                                         <form method="POST" action="{{ route('admin.rentals.approve', $rental) }}">
                                             @csrf
@@ -299,12 +304,6 @@
                                                 Complete rental
                                             </button>
                                         </form>
-                                    @endif
-
-                                    @if (in_array($statusSlug, ['completed', 'rejected', 'cancelled']))
-                                        <span class="text-sm font-medium text-gray-500 dark:text-gray-400">
-                                            No actions available for this rental.
-                                        </span>
                                     @endif
                                 </div>
                             </div>
