@@ -12,6 +12,8 @@ class Rental extends Model
         'status_id',
         'pickup_date',
         'return_date',
+        'pickup_time',
+        'return_time',
         'total_days',
         'price_per_day',
         'discount_per_day',

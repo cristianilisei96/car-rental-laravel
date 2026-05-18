@@ -149,6 +149,12 @@
 
                                         <p class="mt-1 font-bold text-gray-900 dark:text-white">
                                             {{ $rental->pickup_date->format('d.m.Y') }}
+
+                                            @if ($rental->pickup_time)
+                                                <span class="ml-1 text-gray-500 dark:text-gray-400">
+                                                    {{ \Carbon\Carbon::parse($rental->pickup_time)->format('H:i') }}
+                                                </span>
+                                            @endif
                                         </p>
                                     </div>
 
@@ -159,6 +165,11 @@
 
                                         <p class="mt-1 font-bold text-gray-900 dark:text-white">
                                             {{ $rental->return_date->format('d.m.Y') }}
+                                            @if ($rental->return_time)
+                                                <span class="ml-1 text-gray-500 dark:text-gray-400">
+                                                    {{ \Carbon\Carbon::parse($rental->return_time)->format('H:i') }}
+                                                </span>
+                                            @endif
                                         </p>
                                     </div>
 
@@ -181,28 +192,6 @@
                                             {{ $rental->created_at->format('d.m.Y H:i') }}
                                         </p>
                                     </div>
-
-                                    @if (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status !== 'paid')
-                                        <div class="mt-6 border-t border-gray-200 pt-6 dark:border-gray-800">
-                                            <form method="POST"
-                                                action="{{ route('customer.rentals.cancel', $rental) }}">
-                                                @csrf
-                                                @method('PATCH')
-
-                                                <button type="submit"
-                                                    onclick="return confirm('Are you sure you want to cancel this rental request?')"
-                                                    class="inline-flex rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700">
-                                                    Cancel rental
-                                                </button>
-                                            </form>
-                                        </div>
-                                    @elseif (in_array($statusSlug, ['pending', 'approved']) && $rental->payment_status === 'paid')
-                                        <div class="mt-6 border-t border-gray-200 pt-6 dark:border-gray-800">
-                                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                                This rental is already paid. Please contact support to cancel it.
-                                            </p>
-                                        </div>
-                                    @endif
                                 </div>
 
                                 <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">

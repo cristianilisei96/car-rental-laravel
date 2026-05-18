@@ -16,6 +16,26 @@
 
         $minPickupDate = now()->addDay()->toDateString();
         $minReturnDate = now()->addDays(2)->toDateString();
+
+        $businessTimes = [
+            '09:00',
+            '09:30',
+            '10:00',
+            '10:30',
+            '11:00',
+            '11:30',
+            '12:00',
+            '12:30',
+            '13:00',
+            '13:30',
+            '14:00',
+            '14:30',
+            '15:00',
+            '15:30',
+            '16:00',
+            '16:30',
+            '17:00',
+        ];
     @endphp
 
     <div class="bg-gray-100 dark:bg-gray-950 min-h-screen py-10">
@@ -32,6 +52,13 @@
                 <div
                     class="mb-6 rounded-2xl border border-yellow-200 bg-yellow-50 p-4 text-yellow-800 dark:border-yellow-900/60 dark:bg-yellow-950/40 dark:text-yellow-300">
                     {{ session('warning') }}
+                </div>
+            @endif
+
+            @if (isset($isAvailableForSelectedDates) && !$isAvailableForSelectedDates)
+                <div
+                    class="mb-6 rounded-2xl border border-red-200 bg-red-50 p-4 text-red-800 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">
+                    This car is not available for the selected period. Please choose different dates.
                 </div>
             @endif
 
@@ -78,7 +105,7 @@
                     <form method="POST" action="{{ route('customer.rentals.store', $car) }}" class="mt-8 space-y-6">
                         @csrf
 
-                        <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                        <div class="grid grid-cols-1 gap-6 md:grid-cols-4">
                             <div>
                                 <label for="pickup_date"
                                     class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -91,9 +118,27 @@
                                     class="w-full rounded-xl border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
 
                                 @error('pickup_date')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">
-                                        {{ $message }}
-                                    </p>
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label for="pickup_time"
+                                    class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                    Pick-up time
+                                </label>
+
+                                <select id="pickup_time" name="pickup_time"
+                                    class="w-full rounded-xl border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
+                                    @foreach ($businessTimes as $time)
+                                        <option value="{{ $time }}" @selected(old('pickup_time', $pickupTime ?? '09:00') === $time)>
+                                            {{ $time }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('pickup_time')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
                             </div>
 
@@ -109,12 +154,35 @@
                                     class="w-full rounded-xl border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
 
                                 @error('return_date')
-                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">
-                                        {{ $message }}
-                                    </p>
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label for="return_time"
+                                    class="mb-2 block text-sm font-semibold text-gray-700 dark:text-gray-300">
+                                    Return time
+                                </label>
+
+                                <select id="return_time" name="return_time"
+                                    class="w-full rounded-xl border-gray-300 bg-white px-4 py-3 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100">
+                                    @foreach ($businessTimes as $time)
+                                        <option value="{{ $time }}" @selected(old('return_time', $returnTime ?? '17:00') === $time)>
+                                            {{ $time }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('return_time')
+                                    <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
+
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Business hours: Monday to Friday, 09:00 - 17:00. Pick-up and return times are available in
+                            30-minute intervals.
+                        </p>
 
                         <div>
                             <label class="mb-3 block text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -164,9 +232,12 @@
                                 Back to car
                             </a>
 
-                            <button type="submit"
-                                class="inline-flex justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700">
-                                Submit rental request
+                            <button type="submit" @disabled(isset($isAvailableForSelectedDates) && !$isAvailableForSelectedDates)
+                                class="inline-flex justify-center rounded-xl px-6 py-3 text-sm font-semibold text-white
+        {{ isset($isAvailableForSelectedDates) && !$isAvailableForSelectedDates
+            ? 'cursor-not-allowed bg-gray-400'
+            : 'bg-blue-600 hover:bg-blue-700' }}">
+                                {{ isset($isAvailableForSelectedDates) && !$isAvailableForSelectedDates ? 'Not available for selected dates' : 'Submit rental request' }}
                             </button>
                         </div>
                     </form>
@@ -187,6 +258,9 @@
 
                             <span class="font-semibold text-gray-900 dark:text-white">
                                 {{ \Carbon\Carbon::parse($priceDetails['pickup_date'])->format('d.m.Y') }}
+                                <span class="ml-1 text-gray-500 dark:text-gray-400">
+                                    {{ $pickupTime ?? '09:00' }}
+                                </span>
                             </span>
                         </div>
 
@@ -197,6 +271,9 @@
 
                             <span class="font-semibold text-gray-900 dark:text-white">
                                 {{ \Carbon\Carbon::parse($priceDetails['return_date'])->format('d.m.Y') }}
+                                <span class="ml-1 text-gray-500 dark:text-gray-400">
+                                    {{ $returnTime ?? '17:00' }}
+                                </span>
                             </span>
                         </div>
 
@@ -273,10 +350,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const pickup = document.getElementById('pickup_date');
+            const pickupDate = document.getElementById('pickup_date');
             const returnDate = document.getElementById('return_date');
+            const pickupTime = document.getElementById('pickup_time');
+            const returnTime = document.getElementById('return_time');
 
-            if (!pickup || !returnDate) {
+            if (!pickupDate || !returnDate || !pickupTime || !returnTime) {
                 return;
             }
 
@@ -288,44 +367,50 @@
                 return date.toISOString().split('T')[0];
             }
 
-            function reloadWithSelectedDates() {
-                if (!pickup.value || !returnDate.value) {
+            function reloadWithSelectedDatesAndTimes() {
+                if (!pickupDate.value || !returnDate.value || !pickupTime.value || !returnTime.value) {
                     return;
                 }
 
                 const url = new URL(reservationUrl, window.location.origin);
-                url.searchParams.set('pickup_date', pickup.value);
+
+                url.searchParams.set('pickup_date', pickupDate.value);
                 url.searchParams.set('return_date', returnDate.value);
+                url.searchParams.set('pickup_time', pickupTime.value);
+                url.searchParams.set('return_time', returnTime.value);
 
                 window.location.href = url.toString();
             }
 
-            pickup.addEventListener('change', function() {
-                if (!pickup.value) {
+            pickupDate.addEventListener('change', function() {
+                if (!pickupDate.value) {
                     return;
                 }
 
-                const minReturn = addDays(pickup.value, 1);
+                const minReturn = addDays(pickupDate.value, 1);
                 returnDate.min = minReturn;
 
-                if (!returnDate.value || returnDate.value <= pickup.value) {
+                if (!returnDate.value || returnDate.value <= pickupDate.value) {
                     returnDate.value = minReturn;
                 }
 
-                reloadWithSelectedDates();
+                reloadWithSelectedDatesAndTimes();
             });
 
             returnDate.addEventListener('change', function() {
-                if (!pickup.value || !returnDate.value) {
+                if (!pickupDate.value || !returnDate.value) {
                     return;
                 }
 
-                if (returnDate.value <= pickup.value) {
-                    returnDate.value = addDays(pickup.value, 1);
+                if (returnDate.value <= pickupDate.value) {
+                    returnDate.value = addDays(pickupDate.value, 1);
                 }
 
-                reloadWithSelectedDates();
+                reloadWithSelectedDatesAndTimes();
             });
+
+            pickupTime.addEventListener('change', reloadWithSelectedDatesAndTimes);
+            returnTime.addEventListener('change', reloadWithSelectedDatesAndTimes);
         });
     </script>
 </x-customer.layout>

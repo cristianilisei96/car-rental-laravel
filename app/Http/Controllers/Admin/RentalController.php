@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Rental;
 use App\Models\RentalStatus;
 use Illuminate\Http\RedirectResponse;
+use App\Services\CarAvailabilityService;
 
 class RentalController extends Controller
 {
@@ -24,10 +25,19 @@ class RentalController extends Controller
         return view('admin.rentals.index', compact('rentals'));
     }
 
-    public function approve(Rental $rental): RedirectResponse
+    public function approve(Rental $rental, CarAvailabilityService $availabilityService): RedirectResponse
     {
         if ($rental->status?->slug !== 'pending') {
             return back()->with('warning', 'Only pending rentals can be approved.');
+        }
+
+        if (! $availabilityService->isAvailable(
+            $rental->car,
+            $rental->pickup_date->toDateString(),
+            $rental->return_date->toDateString(),
+            $rental->id
+        )) {
+            return back()->with('warning', 'This car already has an approved or active rental for the selected period.');
         }
 
         $approvedStatus = RentalStatus::where('slug', 'approved')->firstOrFail();

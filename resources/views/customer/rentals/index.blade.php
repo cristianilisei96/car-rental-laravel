@@ -148,6 +148,12 @@
 
                                             <p class="mt-1 font-bold text-gray-900 dark:text-white">
                                                 {{ $rental->pickup_date->format('d.m.Y') }}
+
+                                                @if ($rental->pickup_time)
+                                                    <span class="ml-1 text-gray-500 dark:text-gray-400">
+                                                        {{ \Carbon\Carbon::parse($rental->pickup_time)->format('H:i') }}
+                                                    </span>
+                                                @endif
                                             </p>
                                         </div>
 
@@ -158,6 +164,12 @@
 
                                             <p class="mt-1 font-bold text-gray-900 dark:text-white">
                                                 {{ $rental->return_date->format('d.m.Y') }}
+
+                                                @if ($rental->return_time)
+                                                    <span class="ml-1 text-gray-500 dark:text-gray-400">
+                                                        {{ \Carbon\Carbon::parse($rental->return_time)->format('H:i') }}
+                                                    </span>
+                                                @endif
                                             </p>
                                         </div>
 

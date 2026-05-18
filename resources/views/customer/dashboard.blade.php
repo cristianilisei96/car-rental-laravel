@@ -199,8 +199,8 @@
                     </div>
                 </div>
 
-                <div
-                    class="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+                <a href="{{ route('customer.favorites.index') }}"
+                    class="block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-red-400 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-red-500">
                     <div class="flex items-start justify-between">
                         <div>
                             <p class="text-sm text-gray-500 dark:text-gray-400">
@@ -214,7 +214,7 @@
 
                         <span class="text-3xl">❤️</span>
                     </div>
-                </div>
+                </a>
 
                 <a href="{{ route('customer.account-details.edit') }}"
                     class="block rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-500 hover:shadow-md dark:border-gray-800 dark:bg-gray-900 dark:hover:border-blue-500">
