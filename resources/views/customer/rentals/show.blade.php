@@ -271,6 +271,32 @@
                     </span>
                 </div>
 
+                @if (!in_array($statusSlug, ['completed', 'cancelled', 'rejected']))
+                    <form method="POST" action="{{ route('customer.rentals.messages.store', $rental) }}"
+                        class="mt-6 rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-800 dark:bg-gray-950">
+                        @csrf
+
+                        <label for="message" class="block text-sm font-semibold text-gray-900 dark:text-white">
+                            Send a message to admin
+                        </label>
+
+                        <textarea id="message" name="message" rows="3"
+                            class="mt-2 w-full rounded-xl border-gray-300 bg-white text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100"
+                            placeholder="Ask a question about this rental...">{{ old('message') }}</textarea>
+
+                        @error('message')
+                            <p class="mt-2 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
+
+                        <div class="mt-3 flex justify-end">
+                            <button type="submit"
+                                class="rounded-xl bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-700">
+                                Send message
+                            </button>
+                        </div>
+                    </form>
+                @endif
+
                 <div class="mt-6 space-y-4">
                     @forelse ($rental->events as $event)
                         <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">

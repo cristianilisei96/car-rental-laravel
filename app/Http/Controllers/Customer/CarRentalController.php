@@ -267,6 +267,30 @@ class CarRentalController extends Controller
             ->with('success', 'Your rental request has been created and is waiting for admin approval.');
     }
 
+    public function storeMessage(Request $request, Rental $rental)
+    {
+        if ($rental->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if (in_array($rental->status?->slug, ['completed', 'cancelled', 'rejected'])) {
+            return back()->with('warning', 'You can no longer send messages for this rental.');
+        }
+
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'min:2', 'max:2000'],
+        ]);
+
+        RentalEvent::create([
+            'rental_id' => $rental->id,
+            'user_id' => Auth::id(),
+            'type' => 'customer_message',
+            'message' => $validated['message'],
+        ]);
+
+        return back()->with('success', 'Your message was sent successfully.');
+    }
+
     public function cancel(Rental $rental)
     {
         if ($rental->user_id !== Auth::id()) {

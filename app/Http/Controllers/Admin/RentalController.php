@@ -8,6 +8,7 @@ use App\Models\RentalStatus;
 use Illuminate\Http\RedirectResponse;
 use App\Services\CarAvailabilityService;
 use App\Models\RentalEvent;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RentalController extends Controller
@@ -45,6 +46,26 @@ class RentalController extends Controller
         ]);
 
         return view('admin.rentals.show', compact('rental'));
+    }
+
+    public function storeMessage(Request $request, Rental $rental)
+    {
+        if (in_array($rental->status?->slug, ['completed', 'cancelled', 'rejected'])) {
+            return back()->with('warning', 'You can no longer send messages for this rental.');
+        }
+
+        $validated = $request->validate([
+            'message' => ['required', 'string', 'min:2', 'max:2000'],
+        ]);
+
+        RentalEvent::create([
+            'rental_id' => $rental->id,
+            'user_id' => Auth::id(),
+            'type' => 'admin_message',
+            'message' => $validated['message'],
+        ]);
+
+        return back()->with('success', 'Your reply was sent successfully.');
     }
 
     public function approve(Rental $rental, CarAvailabilityService $availabilityService): RedirectResponse
