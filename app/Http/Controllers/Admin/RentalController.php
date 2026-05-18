@@ -10,6 +10,7 @@ use App\Services\CarAvailabilityService;
 use App\Models\RentalEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class RentalController extends Controller
 {
@@ -46,6 +47,25 @@ class RentalController extends Controller
         ]);
 
         return view('admin.rentals.show', compact('rental'));
+    }
+
+    public function completeForm(Rental $rental)
+    {
+        if ($rental->status?->slug !== 'active') {
+            return redirect()
+                ->route('admin.rentals.show', $rental)
+                ->with('warning', 'Only active rentals can be completed.');
+        }
+
+        $rental->load([
+            'car.brand',
+            'car.model',
+            'car.images',
+            'status',
+            'user.customerProfile',
+        ]);
+
+        return view('admin.rentals.complete', compact('rental'));
     }
 
     public function storeMessage(Request $request, Rental $rental)
@@ -184,34 +204,51 @@ class RentalController extends Controller
         return back()->with('success', 'Rental started successfully. Car status changed to rented.');
     }
 
-    public function complete(Rental $rental): RedirectResponse
+    public function complete(Request $request, Rental $rental)
     {
         if ($rental->status?->slug !== 'active') {
             return back()->with('warning', 'Only active rentals can be completed.');
         }
 
-        $completedStatus = RentalStatus::where('slug', 'completed')->firstOrFail();
-
-        $oldStatusId = $rental->status_id;
-
-        $rental->update([
-            'status_id' => $completedStatus->id,
+        $validated = $request->validate([
+            'actual_return_at' => ['required', 'date'],
+            'return_mileage' => ['nullable', 'integer', 'min:0', 'max:9999999'],
+            'fuel_level' => ['required', 'string', 'max:50'],
+            'return_notes' => ['nullable', 'string', 'max:2000'],
+            'damage_notes' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        $this->createRentalEvent(
-            $rental,
-            'rental_completed',
-            'Rental completed by admin.',
-            $oldStatusId,
-            $completedStatus->id
-        );
+        DB::transaction(function () use ($rental, $validated) {
+            $completedStatus = RentalStatus::where('slug', 'completed')->firstOrFail();
+            $availableStatus = \App\Models\CarStatus::where('name', 'Available')->firstOrFail();
 
-        // car_statuses: 1 = Available
-        $rental->car?->update([
-            'status_id' => 1,
-        ]);
+            $oldStatusId = $rental->status_id;
 
-        return back()->with('success', 'Rental completed successfully. Car status changed to available.');
+            $rental->update([
+                'status_id' => $completedStatus->id,
+                'actual_return_at' => $validated['actual_return_at'],
+                'return_mileage' => $validated['return_mileage'] ?? null,
+                'fuel_level' => $validated['fuel_level'],
+                'return_notes' => $validated['return_notes'] ?? null,
+                'damage_notes' => $validated['damage_notes'] ?? null,
+            ]);
+
+            $rental->car()->update([
+                'status_id' => $availableStatus->id,
+            ]);
+
+            $this->createRentalEvent(
+                $rental,
+                'rental_completed',
+                'Rental completed by admin.',
+                $oldStatusId,
+                $completedStatus->id
+            );
+        });
+
+        return redirect()
+            ->route('admin.rentals.show', $rental)
+            ->with('success', 'Rental completed successfully.');
     }
 
     public function cancel(Rental $rental): RedirectResponse

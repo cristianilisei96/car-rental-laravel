@@ -285,15 +285,10 @@
                             @endif
 
                             @if ($statusSlug === 'active')
-                                <form method="POST" action="{{ route('admin.rentals.complete', $rental) }}">
-                                    @csrf
-                                    @method('PATCH')
-
-                                    <button type="submit" onclick="return confirm('Complete this rental?')"
-                                        class="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
-                                        Complete rental
-                                    </button>
-                                </form>
+                                <a href="{{ route('admin.rentals.complete.form', $rental) }}"
+                                    class="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
+                                    Complete rental
+                                </a>
                             @endif
 
                             @if (in_array($statusSlug, ['completed', 'rejected', 'cancelled']))
@@ -302,6 +297,73 @@
                                 </span>
                             @endif
                         </div>
+
+                        @if (
+                            $rental->actual_return_at ||
+                                $rental->return_mileage ||
+                                $rental->fuel_level ||
+                                $rental->return_notes ||
+                                $rental->damage_notes)
+                            <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-800">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">
+                                    Return inspection
+                                </h3>
+
+                                <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
+                                    <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">
+                                        <p class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
+                                            Actual return
+                                        </p>
+
+                                        <p class="mt-1 font-bold text-gray-900 dark:text-white">
+                                            {{ $rental->actual_return_at ? $rental->actual_return_at->format('d.m.Y H:i') : '-' }}
+                                        </p>
+                                    </div>
+
+                                    <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">
+                                        <p class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
+                                            Return mileage
+                                        </p>
+
+                                        <p class="mt-1 font-bold text-gray-900 dark:text-white">
+                                            {{ $rental->return_mileage ? number_format($rental->return_mileage) . ' km' : '-' }}
+                                        </p>
+                                    </div>
+
+                                    <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">
+                                        <p class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
+                                            Fuel / battery level
+                                        </p>
+
+                                        <p class="mt-1 font-bold text-gray-900 dark:text-white">
+                                            {{ $rental->fuel_level ?? '-' }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                                    <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">
+                                        <p class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
+                                            Return notes
+                                        </p>
+
+                                        <p class="mt-2 text-sm leading-6 text-gray-700 dark:text-gray-300">
+                                            {{ $rental->return_notes ?: 'No return notes added.' }}
+                                        </p>
+                                    </div>
+
+                                    <div class="rounded-2xl bg-gray-100 p-4 dark:bg-gray-950">
+                                        <p class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
+                                            Damage notes
+                                        </p>
+
+                                        <p class="mt-2 text-sm leading-6 text-gray-700 dark:text-gray-300">
+                                            {{ $rental->damage_notes ?: 'No damage notes added.' }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </section>
@@ -503,13 +565,24 @@
                                 @if ($event->oldStatus || $event->newStatus)
                                     <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
                                         Status:
-                                        <span class="font-semibold">
-                                            {{ $event->oldStatus?->name ?? '-' }}
-                                        </span>
-                                        →
-                                        <span class="font-semibold">
-                                            {{ $event->newStatus?->name ?? '-' }}
-                                        </span>
+
+                                        @if ($event->oldStatus && $event->newStatus)
+                                            <span class="font-semibold">
+                                                {{ $event->oldStatus->name }}
+                                            </span>
+                                            →
+                                            <span class="font-semibold">
+                                                {{ $event->newStatus->name }}
+                                            </span>
+                                        @elseif ($event->newStatus)
+                                            <span class="font-semibold">
+                                                {{ $event->newStatus->name }}
+                                            </span>
+                                        @else
+                                            <span class="font-semibold">
+                                                {{ $event->oldStatus->name }}
+                                            </span>
+                                        @endif
                                     </p>
                                 @endif
                             </div>

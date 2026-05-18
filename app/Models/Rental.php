@@ -23,6 +23,11 @@ class Rental extends Model
         'total_price',
         'payment_method',
         'payment_status',
+        'actual_return_at',
+        'return_mileage',
+        'fuel_level',
+        'return_notes',
+        'damage_notes',
     ];
 
     protected $casts = [
@@ -33,6 +38,7 @@ class Rental extends Model
         'subtotal_price' => 'decimal:2',
         'total_discount' => 'decimal:2',
         'total_price' => 'decimal:2',
+        'actual_return_at' => 'datetime',
     ];
 
     public function user()

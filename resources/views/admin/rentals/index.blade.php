@@ -295,15 +295,10 @@
                                     @endif
 
                                     @if ($statusSlug === 'active')
-                                        <form method="POST" action="{{ route('admin.rentals.complete', $rental) }}">
-                                            @csrf
-                                            @method('PATCH')
-
-                                            <button type="submit" onclick="return confirm('Complete this rental?')"
-                                                class="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
-                                                Complete rental
-                                            </button>
-                                        </form>
+                                        <a href="{{ route('admin.rentals.complete.form', $rental) }}"
+                                            class="rounded-xl bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-700">
+                                            Complete rental
+                                        </a>
                                     @endif
                                 </div>
                             </div>

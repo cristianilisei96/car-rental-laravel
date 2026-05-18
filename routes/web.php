@@ -201,6 +201,9 @@ Route::middleware(['auth', 'admin'])
         Route::patch('rentals/{rental}/start', [RentalController::class, 'start'])
             ->name('rentals.start');
 
+        Route::get('rentals/{rental}/complete', [RentalController::class, 'completeForm'])
+            ->name('rentals.complete.form');
+
         Route::patch('rentals/{rental}/complete', [RentalController::class, 'complete'])
             ->name('rentals.complete');
 
