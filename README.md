@@ -1,176 +1,203 @@
-# 🚗 Car Rental Application (Laravel)
+# 🚗 Car Rental Laravel
 
-## 📌 Description
-
-This project is a car rental web application built with Laravel, designed to simulate a real-world system for managing vehicles, users, and rental workflows.
-
-It includes role-based access control, an admin panel for managing car inventory, and a normalized database structure designed for scalability and maintainability.
-
-The application is currently under active development, with a focus on implementing real-world business logic and best practices.
-
----
-
-## 🌐 Project Status
-
-🚧 Work in progress – core features implemented, rental system and advanced filtering in development.
-
-## 🚀 Features
-
-### 🔐 Authentication & Authorization
-
-- User registration and login system
-- Role-based access (Admin / Customer)
-- Middleware protection for routes
-
-### 🧑‍💼 Admin Panel
-
-- Add and view cars
-- Manage car attributes through separate tables:
-    - Brands
-    - Models
-    - Colors
-    - Fuel types
-    - Seats
-    - Transmissions
-    - Status (available, rented, etc.)
-
-### 🚗 Car Management
-
-- Fully normalized database structure
-- Each car is linked to multiple attributes (brand, fuel, etc.)
-- Car status system (availability tracking)
-
-### 📄 Customer Document System
-
-- Users can upload identity documents
-- Required for rental approval
-- Users can delete documents from UI
-- Admin retains access for verification (security measure)
-
----
-
-## 🧠 Key Concepts Implemented
-
-- Role-based authorization using middleware
-- Normalized relational database design
-- Separation of concerns (MVC architecture)
-- Dynamic data relationships (cars linked to multiple attributes)
-- File upload handling with access control
-
----
-
-## 🔍 Features in Progress
-
-### Search & Availability Filtering
-
-- Search form on homepage (UI implemented)
-- Planned filtering:
-    - By availability
-    - By date range (pickup & return)
-
-- System will exclude already reserved cars in selected period
-
-### 💸 Dynamic Pricing & Discounts
-
-- Discounts based on rental duration:
-    - Example: 7 days → discount per day
-    - Example: 14 days → higher discount per day
-
-- Discounts configurable per car
-
-### 📅 Rental System
-
-- Only available cars can be rented
-- Requires document verification (approved or not by admin)
-- Full booking flow (in development)
-
----
-
-## 🧱 Tech Stack
-
-- Laravel
-- PHP
-- MySQL
-- Tailwind CSS
-- Blade
-
----
-
-## ⚙️ Installation
-
-```bash
-git clone <your-repo-url>
-cd project
-
-composer install
-cp .env.example .env
-php artisan key:generate
-
-# Configure your database in .env
-
-php artisan migrate
-php artisan serve
-```
+A full-featured car rental web application built with **Laravel**, **MySQL**, and **Blade**. Supports customer verification (KYC), fleet management, online reservations, discount rules, and a complete admin panel.
 
 ---
 
 ## 📸 Screenshots
 
-### Homepage
+### 🌐 Public
 
-<img width="2552" height="2492" alt="screenshot-1" src="https://github.com/user-attachments/assets/05fc4c86-0177-44a7-8759-4a0624323a05" />
+![Landing Page](screenshots/landing.png)
+*Landing page with date-based search and featured cars*
 
-- Homepage with search functionality for available cars.
+![Available Cars](screenshots/cars.png)
+*Cars listing with filters by type, fuel and transmission*
 
----
+![Car Detail](screenshots/car-detail.png)
+*Car detail page with images, specs and pricing*
 
-### Admin Dashboard
+### 🛠️ Admin Panel
 
-<img width="2552" height="1308" alt="screenshot-2" src="https://github.com/user-attachments/assets/a2475793-a826-4c19-bc7c-0cc6aff0e13f" />
+![Admin Dashboard](screenshots/admin-dashboard.png)
+*Admin dashboard — customers, cars, rentals and revenue overview*
 
-- List of cars
-- Add car button or table view
+![Admin Rentals](screenshots/admin-rentals.png)
+*Rental list with status, payment and date info*
 
----
+![Rental Detail](screenshots/rental-detail.png)
+*Rental detail with customer info, price summary and full event timeline*
 
-### Add Car Form
+![Edit Car](screenshots/admin-car-edit.png)
+*Car editor — multiple images, specs and day-based discount rules*
 
-<img width="2552" height="1308" alt="screenshot-3" src="https://github.com/user-attachments/assets/4b02521d-c9d4-484e-8db8-41340f65d6a2" />
+### 👤 Customer Panel
 
-- Form fields (brand, fuel, seats, etc.)
-- This proves complexity of your system
+![Customer Dashboard](screenshots/customer-dashboard.png)
+*Customer dashboard — verification status, favorites and rental history*
 
----
-
-### Database Structure
-
-<img width="2552" height="1308" alt="screenshot-4" src="https://github.com/user-attachments/assets/0c648259-6ae1-4f8c-908c-a2d9c25a596c" />
-
-### 🔗 Database Diagram
-
-You can explore the full database structure here:
-
-## https://dbdiagram.io/d/car-rental-laravel-db-69f23fd5c6a36f9c1bbeaf70
-
-### Document Upload
-
-<img width="2552" height="1308" alt="screenshot-5" src="https://github.com/user-attachments/assets/6679c931-81ba-4d24-a06f-6021e67e1bea" />
-
-- Upload UI for customer documents
+![KYC Documents](screenshots/kyc-documents.png)
+*Document upload — Driver License and ID Card/Passport for account verification*
 
 ---
 
-## 🎯 Goal
+## ✨ Features
 
-The goal of this project is to build a production-like application, focusing on:
+### 🌐 Public
+- Landing page with date-based car availability search
+- Cars listing grouped by type (Sedan, SUV, etc.) with filters (fuel, transmission, type)
+- Car detail page with multiple images and pricing info
+- Dark / Light mode toggle
 
-- clean architecture
-- scalable database design
-- real-world business logic
-- Laravel best practices
+### 👤 Customer
+- Register & login with email
+- KYC verification — upload **Driver License** and **ID Card or Passport**
+- Reservations only allowed after document approval
+- Customer dashboard: verification status, favorite cars, total spent, pending rentals
+- In-rental messaging with admin
+- View full rental timeline (created → approved → active → completed)
+
+### 🛠️ Admin
+- Admin dashboard with overview: customers, cars, rentals, paid revenue
+- **Rental workflow**: Pending → Approved → Active → Completed
+- **Payment tracking**: Cash and Card managed separately; admin marks payments as paid
+- Customer management & document review (approve/reject KYC)
+- Full fleet CRUD: add/edit/delete cars with multiple images, set main image
+- Car attributes management: 43 brands, 34 models, colors, fuels, seats, transmissions, types, statuses
+- **Discount rules per car**: configurable day-based discounts (e.g. 7+ days = -€20/day), enable/disable per rule
+- Rental details with complete event timeline
 
 ---
 
-## 📌 Status
+## 🛠 Tech Stack
 
-🟡 In active development
+| Layer | Technology |
+|---|---|
+| Backend | PHP 8+, Laravel 11 |
+| Frontend | Blade, Tailwind CSS |
+| Database | MySQL |
+| Auth | Laravel Breeze / built-in Auth |
+| File Storage | Laravel Storage (local) |
+
+---
+
+## ⚙️ Installation
+
+### Requirements
+- PHP >= 8.1
+- Composer
+- MySQL
+- Node.js & NPM
+
+### Steps
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/cristianilisei96/car-rental-laravel.git
+cd car-rental-laravel
+
+# 2. Install PHP dependencies
+composer install
+
+# 3. Install Node dependencies & build assets
+npm install && npm run build
+
+# 4. Copy environment file and configure it
+cp .env.example .env
+
+# 5. Generate application key
+php artisan key:generate
+
+# 6. Configure your database in .env
+# DB_DATABASE=car_rental
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# 7. Run migrations and seed the database
+php artisan migrate --seed
+
+# 8. Create storage symlink
+php artisan storage:link
+
+# 9. Start the development server
+php artisan serve
+```
+
+Then visit: [http://localhost:8000](http://localhost:8000)
+
+---
+
+## 🔐 Default Credentials (after seeding)
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | admin@admin.com | password |
+| Customer | customer@example.com | password |
+
+> ⚠️ Change these credentials before deploying to production.
+
+---
+
+## 📁 Project Structure (key parts)
+
+```
+app/
+├── Http/Controllers/
+│   ├── Admin/          # Admin controllers (cars, rentals, customers)
+│   └── Customer/       # Customer controllers (reservations, documents)
+├── Models/             # Car, Rental, Document, User, DiscountRule...
+resources/
+├── views/
+│   ├── admin/          # Admin panel Blade views
+│   ├── customer/       # Customer panel Blade views
+│   └── public/         # Public landing, cars listing
+database/
+├── migrations/
+└── seeders/
+```
+
+---
+
+## 🔄 Rental Flow
+
+```
+Customer registers
+    → uploads Driver License + ID/Passport
+        → Admin approves documents (KYC)
+            → Customer searches & picks a car
+                → Submits reservation request
+                    → Admin reviews & approves
+                        → Customer picks up car (Active)
+                            → Customer returns car (Completed)
+                                → Admin marks payment as Paid
+```
+
+---
+
+## 💰 Discount Rules
+
+Each car can have custom discount rules based on rental duration:
+
+| Minimum Days | Discount per Day |
+|---|---|
+| 7+ days | -€20.00 |
+| 14+ days | -€50.00 |
+| 28+ days | -€100.00 |
+
+Rules can be individually enabled or disabled from the admin panel.
+
+---
+
+## 📄 License
+
+This project is open-source and available under the [MIT License](LICENSE).
+
+---
+
+## 👤 Author
+
+**Cristian Ilisei**
+- GitHub: [@cristianilisei96](https://github.com/cristianilisei96)
+- LinkedIn: [linkedin.com/in/cristianilisei96](https://linkedin.com/in/cristianilisei96)
+- Email: cristianilisei96@gmail.com
+- Location: Piatra Neamț, Romania
