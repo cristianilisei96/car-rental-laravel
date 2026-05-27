@@ -9,47 +9,49 @@ A full-featured car rental web application built with **Laravel**, **MySQL**, an
 ### 🌐 Public
 
 ![Landing Page](screenshots/landing.png)
-*Landing page with date-based search and featured cars*
+_Landing page with date-based search and featured cars_
 
 ![Available Cars](screenshots/cars.png)
-*Cars listing with filters by type, fuel and transmission*
+_Cars listing with filters by type, fuel and transmission_
 
 ![Car Detail](screenshots/car-detail.png)
-*Car detail page with images, specs and pricing*
+_Car detail page with images, specs and pricing_
 
 ### 🛠️ Admin Panel
 
 ![Admin Dashboard](screenshots/admin-dashboard.png)
-*Admin dashboard — customers, cars, rentals and revenue overview*
+_Admin dashboard — customers, cars, rentals and revenue overview_
 
 ![Admin Rentals](screenshots/admin-rentals.png)
-*Rental list with status, payment and date info*
+_Rental list with status, payment and date info_
 
 ![Rental Detail](screenshots/rental-detail.png)
-*Rental detail with customer info, price summary and full event timeline*
+_Rental detail with customer info, price summary and full event timeline_
 
 ![Edit Car](screenshots/admin-car-edit.png)
-*Car editor — multiple images, specs and day-based discount rules*
+_Car editor — multiple images, specs and day-based discount rules_
 
 ### 👤 Customer Panel
 
 ![Customer Dashboard](screenshots/customer-dashboard.png)
-*Customer dashboard — verification status, favorites and rental history*
+_Customer dashboard — verification status, favorites and rental history_
 
 ![KYC Documents](screenshots/kyc-documents.png)
-*Document upload — Driver License and ID Card/Passport for account verification*
+_Document upload — Driver License and ID Card/Passport for account verification_
 
 ---
 
 ## ✨ Features
 
 ### 🌐 Public
+
 - Landing page with date-based car availability search
 - Cars listing grouped by type (Sedan, SUV, etc.) with filters (fuel, transmission, type)
 - Car detail page with multiple images and pricing info
 - Dark / Light mode toggle
 
 ### 👤 Customer
+
 - Register & login with email
 - KYC verification — upload **Driver License** and **ID Card or Passport**
 - Reservations only allowed after document approval
@@ -58,6 +60,7 @@ A full-featured car rental web application built with **Laravel**, **MySQL**, an
 - View full rental timeline (created → approved → active → completed)
 
 ### 🛠️ Admin
+
 - Admin dashboard with overview: customers, cars, rentals, paid revenue
 - **Rental workflow**: Pending → Approved → Active → Completed
 - **Payment tracking**: Cash and Card managed separately; admin marks payments as paid
@@ -71,20 +74,21 @@ A full-featured car rental web application built with **Laravel**, **MySQL**, an
 
 ## 🛠 Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Backend | PHP 8+, Laravel 11 |
-| Frontend | Blade, Tailwind CSS |
-| Database | MySQL |
-| Auth | Laravel Breeze / built-in Auth |
-| File Storage | Laravel Storage (local) |
+| Layer        | Technology                     |
+| ------------ | ------------------------------ |
+| Backend      | PHP 8+, Laravel 13             |
+| Frontend     | Blade, Tailwind CSS            |
+| Database     | MySQL                          |
+| Auth         | Laravel Breeze / built-in Auth |
+| File Storage | Laravel Storage (local)        |
 
 ---
 
 ## ⚙️ Installation
 
 ### Requirements
-- PHP >= 8.1
+
+- PHP >= 8.3
 - Composer
 - MySQL
 - Node.js & NPM
@@ -129,9 +133,9 @@ Then visit: [http://localhost:8000](http://localhost:8000)
 
 ## 🔐 Default Credentials (after seeding)
 
-| Role | Email | Password |
-|---|---|---|
-| Admin | admin@admin.com | password |
+| Role     | Email                | Password |
+| -------- | -------------------- | -------- |
+| Admin    | admin@admin.com      | password |
 | Customer | customer@example.com | password |
 
 > ⚠️ Change these credentials before deploying to production.
@@ -179,10 +183,10 @@ Customer registers
 Each car can have custom discount rules based on rental duration:
 
 | Minimum Days | Discount per Day |
-|---|---|
-| 7+ days | -€20.00 |
-| 14+ days | -€50.00 |
-| 28+ days | -€100.00 |
+| ------------ | ---------------- |
+| 7+ days      | -€20.00          |
+| 14+ days     | -€50.00          |
+| 28+ days     | -€100.00         |
 
 Rules can be individually enabled or disabled from the admin panel.
 
@@ -197,6 +201,7 @@ This project is open-source and available under the [MIT License](LICENSE).
 ## 👤 Author
 
 **Cristian Ilisei**
+
 - GitHub: [@cristianilisei96](https://github.com/cristianilisei96)
 - LinkedIn: [linkedin.com/in/cristianilisei96](https://linkedin.com/in/cristianilisei96)
 - Email: cristianilisei96@gmail.com
