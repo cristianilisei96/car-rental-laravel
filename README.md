@@ -133,10 +133,10 @@ Then visit: [http://localhost:8000](http://localhost:8000)
 
 ## 🔐 Default Credentials (after seeding)
 
-| Role     | Email                | Password |
-| -------- | -------------------- | -------- |
-| Admin    | admin@admin.com      | password |
-| Customer | customer@example.com | password |
+| Role     | Email              | Password |
+| -------- | ------------------ | -------- |
+| Admin    | admin@gmail.com    | 12345678 |
+| Customer | customer@gmail.com | 12345678 |
 
 > ⚠️ Change these credentials before deploying to production.
 
